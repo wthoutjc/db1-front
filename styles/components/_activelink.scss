@@ -1,0 +1,17 @@
+.active-navbar {
+  color: #1e90ff;
+}
+.active-navbar > * {
+  color: #1e90ff !important;
+  border-color: #1e90ff;
+  &:hover {
+    border-color: #1e90ff;
+  }
+}
+.navbar-link {
+  text-decoration: none;
+  &:hover {
+    color: rgba(255, 255, 255, 0.664);
+    transition: color 0.2s;
+  }
+}

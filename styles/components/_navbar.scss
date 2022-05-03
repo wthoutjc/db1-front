@@ -1,0 +1,10 @@
+.navbar__actions {
+  display: flex;
+  width: 250px;
+  justify-content: space-evenly;
+}
+.navbar__actions a {
+    display: flex;
+    align-items: center;
+}
+

@@ -1,0 +1,89 @@
+.signup__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  border-radius: 1em;
+  overflow: hidden;
+}
+.signup__container > div {
+  padding: 1em;
+}
+.signup__right {
+  background-color: $blackPrimary;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.signup__right > h4 {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+}
+.signup__right > button {
+  margin-bottom: 0.5em;
+  font-size: 100%;
+  min-width: 34px;
+  width: 0;
+  padding: 0.2em;
+  display: flex;
+  border-radius: 100%;
+  color: darken($color: $whitePrimary, $amount: 10);
+  border-color: $whitePrimary;
+  &:hover {
+    border-color: $whitePrimary;
+  }
+}
+.signup__left {
+  background-color: $whitePrimary;
+  color: $blackPrimary;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.signup__left > h4 {
+  font-weight: bold;
+  margin-bottom: 0.7em;
+}
+.signup__left > p {
+  text-align: center;
+  margin-bottom: 1em;
+}
+.signup__left > a {
+  width: 40%;
+}
+.signup__left > a button {
+  border-radius: 2em;
+  width: 100%;
+  padding: 0.7em 1em;
+  color: $blackPrimary;
+  border-color: $blackPrimary;
+  &:hover {
+    border-color: $blackPrimary;
+  }
+}
+.signup__animation-toRight {
+  animation: slideToRight 0.7s ease-out;
+}
+.signup__animation-toLeft {
+  animation: slideToLeft2 0.7s ease-in-out;
+}
+
+@media all and (max-width: 769px) {
+  .signup__container {
+    flex-direction: column;
+  }
+  .signup__right,
+  .signup__left {
+    width: 100%;
+  }
+  .signup__left {
+    height: 10%;
+  }
+  .signup__right {
+    height: 90%;
+  }
+}
