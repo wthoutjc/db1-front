@@ -21,8 +21,8 @@ import { ActiveLink } from "../../../components/ui";
 
 // Icons
 import GoogleIcon from "@mui/icons-material/Google";
-import PasswordIcon from '@mui/icons-material/Password';
-import EmailIcon from '@mui/icons-material/Email';
+import PasswordIcon from "@mui/icons-material/Password";
+import EmailIcon from "@mui/icons-material/Email";
 import NextLink from "next/link";
 
 interface LoginInfo {
@@ -34,7 +34,8 @@ const LogInPage = () => {
   const dispatch = useAppDispatch();
 
   const { ux } = useAppSelector((state) => state);
-  const { clicks } = ux;
+
+  const clicksCurrent = useMemo(() => ux.clicks, [ux.clicks])
 
   const [clicked, setClicked] = useState(false);
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
@@ -67,7 +68,7 @@ const LogInPage = () => {
         <Box className="login__container">
           <Box
             className={
-              clicks > 1
+              clicksCurrent > 1
                 ? "login__left login__animation-toRight"
                 : "login__left fade-animation"
             }
@@ -88,9 +89,7 @@ const LogInPage = () => {
                 placeholder="E-mail"
                 label="E-mail"
                 error={validEmail}
-                helperText={
-                  validEmail ? "Invalid data" : "Type your e-mail..."
-                }
+                helperText={validEmail ? "Invalid data" : "Type your e-mail..."}
                 onBlur={() => setTouchedUser(true)}
                 onChange={(e) =>
                   setLoginInfo({ ...loginInfo, email: e.target.value })
@@ -123,11 +122,13 @@ const LogInPage = () => {
                   ),
                 }}
               />
-              <Divider sx={{marginBottom: '1em'}} >
+              <Divider sx={{ marginBottom: "1em" }}>
                 <Chip
                   label={
                     <NextLink href="restore-password" passHref>
-                      <Link sx={{textDecoration: 'none'}} >Forgot your password?</Link>
+                      <Link sx={{ textDecoration: "none" }}>
+                        Forgot your password?
+                      </Link>
                     </NextLink>
                   }
                 />
@@ -139,17 +140,23 @@ const LogInPage = () => {
           </Box>
           <Box
             className={
-              clicks > 1
+              clicksCurrent > 1
                 ? "login__right login__animation-toLeft"
                 : "login__right fade-animation"
             }
           >
-            <Typography variant="h4">Welcome back!</Typography>
-            <Typography variant="body1">
+            <Typography variant="h4" className="fade-animation">
+              Welcome back!
+            </Typography>
+            <Typography variant="body1" className="fade-animation">
               To keep connected with us please login with your personal info
             </Typography>
             <ActiveLink href="/auth/signup">
-              <Button variant={"outlined"} onClick={() => setClicked(true)}>
+              <Button
+                variant={"outlined"}
+                className="fade-animation"
+                onClick={() => setClicked(true)}
+              >
                 <Typography variant="body1">SIGN UP</Typography>
               </Button>
             </ActiveLink>

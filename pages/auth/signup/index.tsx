@@ -17,10 +17,10 @@ import { ActiveLink } from "../../../components/ui";
 
 // Icons
 import GoogleIcon from "@mui/icons-material/Google";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 import PersonIcon from "@mui/icons-material/Person";
-import PasswordIcon from '@mui/icons-material/Password';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import PasswordIcon from "@mui/icons-material/Password";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 
 interface LoginInfo {
   email: string;
@@ -33,7 +33,8 @@ const SignUpPage = () => {
   const dispatch = useAppDispatch();
 
   const { ux } = useAppSelector((state) => state);
-  const { clicks } = ux;
+
+  const currentClicks = useMemo(() => ux.clicks, [ux.clicks])
 
   const [clicked, setClicked] = useState(false);
 
@@ -81,7 +82,7 @@ const SignUpPage = () => {
         <Box className={"signup__container"}>
           <Box
             className={
-              clicks > 1
+              currentClicks > 1
                 ? "signup__right signup__animation-toLeft"
                 : "signup__right fade-animation"
             }
@@ -91,7 +92,7 @@ const SignUpPage = () => {
               <GoogleIcon />
             </Button>
             <Typography variant="body2" sx={{ fontStyle: "italic" }}>
-            or use your email account for registration
+              or use your email account for registration
             </Typography>
             <Box
               sx={{ boxSizing: "border-box", padding: "2em", width: "100%" }}
@@ -185,17 +186,23 @@ const SignUpPage = () => {
           </Box>
           <Box
             className={
-              clicks > 1
-                ? "signup__left signup__animation-toRight "
+              currentClicks > 1
+                ? "signup__left signup__animation-toRight"
                 : "signup__left fade-animation"
             }
           >
-            <Typography variant="h4">Hello, Friend!</Typography>
-            <Typography variant="body1">
+            <Typography variant="h4" className="fade-animation">
+              Hello, Friend!
+            </Typography>
+            <Typography variant="body1" className="fade-animation">
               Enter your personal details and start journey with us
             </Typography>
             <ActiveLink href="/auth/login">
-              <Button variant={"outlined"} onClick={() => setClicked(true)}>
+              <Button
+                variant={"outlined"}
+                className="fade-animation"
+                onClick={() => setClicked(true)}
+              >
                 <Typography variant="body1">SIGN IN</Typography>
               </Button>
             </ActiveLink>

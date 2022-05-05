@@ -9,11 +9,18 @@ import { darkTheme } from "../themes";
 import { Provider } from "react-redux";
 import { store } from "../store";
 
+// System Notification
+import { Notifications } from "../components/ui/notification";
+
+// Animation
+import 'animate.css';
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={darkTheme} >
+    <ThemeProvider theme={darkTheme}>
       <Provider store={store}>
         <CssBaseline />
+        <Notifications />
         <Component {...pageProps} />
       </Provider>
     </ThemeProvider>

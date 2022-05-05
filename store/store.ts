@@ -1,11 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 // Reducers
-import { authReducer, uxReducer } from "../reducers";
+import { authReducer, uxReducer, uiReducer } from "../reducers";
 
 export function makeStore() {
   return configureStore({
-    reducer: { auth: authReducer, ux: uxReducer },
+    reducer: { auth: authReducer, ux: uxReducer, ui: uiReducer },
   });
 }
 
