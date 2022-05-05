@@ -95,7 +95,7 @@ const SignUpPage = () => {
               or use your email account for registration
             </Typography>
             <Box
-              sx={{ boxSizing: "border-box", padding: "2em", width: "100%" }}
+              sx={{ boxSizing: "border-box", padding: "1em", width: "100%" }}
             >
               <TextField
                 fullWidth

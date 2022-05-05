@@ -81,7 +81,7 @@ const LogInPage = () => {
               or use your email account
             </Typography>
             <Box
-              sx={{ boxSizing: "border-box", padding: "2em", width: "100%" }}
+              sx={{ boxSizing: "border-box", padding: "1em", width: "100%" }}
             >
               <TextField
                 fullWidth
