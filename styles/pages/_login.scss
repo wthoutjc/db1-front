@@ -62,8 +62,8 @@
   padding: 0.7em 1em;
   color: $blackPrimary;
   border-color: $blackPrimary;
-  &:hover{
-    border-color: $blackPrimary
+  &:hover {
+    border-color: $blackPrimary;
   }
 }
 .login__animation-toRight {
@@ -81,13 +81,20 @@
   .login__right {
     width: 100%;
   }
-  .login__left {
+  .login__left,
+  .login__right {
     height: fit-content;
   }
   .login__left > h4 {
     margin-top: 1em;
   }
   .login__right {
-    height: 10%;
+    height: fit-content;
+  }
+  .login__right > h4 {
+    display: none;
+  }
+  .login__right > a {
+    display: none;
   }
 }

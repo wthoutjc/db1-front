@@ -4,7 +4,7 @@ body {
 #__next {
   width: 100vw;
   height: 100vh;
-  background: url("../../public/img/background.svg");
+  background: url("../../public/img/background.svg") fixed center 50%;
   overflow: hidden;
 }
 .index__container {
