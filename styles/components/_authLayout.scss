@@ -5,14 +5,13 @@
   justify-content: center;
   align-items: center;
 }
-
 .authLayout__content {
   border-radius: 1em;
   display: flex;
   overflow: hidden;
   padding: 2em;
   background-color: #222f3e50;
-  height: 90%;
+  height: min(80vh, 600px);
   width: 95%;
   width: min(80vw,1100px);
   max-height: 700px;

@@ -4,8 +4,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IAuth } from "../interfaces";
 import { AppState } from "../store";
 
+// Enum
+import { Hierarchy } from "../enum"
+
 const initialState: IAuth = {
-  status: false,
+  status: {
+    logged: false,
+    date: 0,
+    hierarchy: null,
+  },
 };
 
 const authSlice = createSlice({
@@ -13,10 +20,17 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state) => {
-      state.status = true;
+      state.status = {
+        ...state.status,
+        logged: true,
+        date: Date.now(),
+        hierarchy: Hierarchy.admin,
+      };
     },
     logout: (state) => {
-      state.status = false;
+      state.status = {
+        ...initialState.status,
+      };
     },
   },
 });

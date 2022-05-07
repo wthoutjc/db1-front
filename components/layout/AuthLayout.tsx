@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import { CSSProperties } from "@mui/styled-engine";
 
 interface Props {
   children: React.ReactNode;

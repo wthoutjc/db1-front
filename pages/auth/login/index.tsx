@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import {
   Box,
   Button,
@@ -13,7 +14,7 @@ import { Layout, AuthLayout } from "../../../components/layout";
 
 // Redux
 import { useAppSelector, useAppDispatch } from "../../../hooks";
-import { incrementClicks } from "../../../reducers";
+import { incrementClicks, login } from "../../../reducers";
 
 // Components
 // UI
@@ -31,6 +32,7 @@ interface LoginInfo {
 }
 
 const LogInPage = () => {
+  const router = useRouter()
   const dispatch = useAppDispatch();
 
   const { ux } = useAppSelector((state) => state);
@@ -55,6 +57,11 @@ const LogInPage = () => {
     () => loginInfo.password.length <= 0 && touchedPassword,
     [loginInfo.password, touchedPassword]
   );
+
+  const handleLoggin = () => {
+    dispatch(login())
+    router.push('/home')
+  }
 
   useEffect(() => {
     if (clicked) {
@@ -133,7 +140,7 @@ const LogInPage = () => {
                   }
                 />
               </Divider>
-              <Button variant="contained" fullWidth>
+              <Button variant="contained" fullWidth onClick={handleLoggin} >
                 SIGN IN
               </Button>
             </Box>

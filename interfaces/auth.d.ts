@@ -1,3 +1,9 @@
+import { Hierarchy, Status } from "../enum";
+
 export interface IAuth {
-  status: boolean;
+  status: {
+    logged: boolean,
+    date: number,
+    hierarchy: Hierarchy | null,
+  };
 }
