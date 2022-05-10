@@ -21,6 +21,8 @@ import EmailIcon from "@mui/icons-material/Email";
 import PersonIcon from "@mui/icons-material/Person";
 import PasswordIcon from "@mui/icons-material/Password";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import { GetServerSideProps } from "next";
+import { requireNoAuth } from "../../../auth";
 
 interface LoginInfo {
   email: string;
@@ -212,5 +214,13 @@ const SignUpPage = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = requireNoAuth(
+  async (_ctx) => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default SignUpPage;

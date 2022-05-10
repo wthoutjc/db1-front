@@ -5,11 +5,8 @@ import {
   Tooltip,
 } from "@mui/material";
 
-// Icons
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
 // Components
-import { ActiveLink } from "../ActiveLink";
+import { ActiveSideBarLink } from "../activeLink";
 
 // Interface
 import { SideBarData } from "../../../interfaces";
@@ -21,10 +18,9 @@ interface ItemSideBar {
 
 const SidebarItem = ({ item, open }: ItemSideBar) => {
   const { title, to, Icon } = item;
-  console.log({ title, to, Icon });
 
   return (
-    <ActiveLink href={to}>
+    <ActiveSideBarLink href={to}>
       <Tooltip title={title}>
         <ListItemButton
           sx={{
@@ -45,7 +41,7 @@ const SidebarItem = ({ item, open }: ItemSideBar) => {
           <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
         </ListItemButton>
       </Tooltip>
-    </ActiveLink>
+    </ActiveSideBarLink>
   );
 };
 

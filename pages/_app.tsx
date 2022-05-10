@@ -13,7 +13,7 @@ import { store } from "../store";
 import { Notifications } from "../components/ui/notification";
 
 // Animation
-import 'animate.css';
+import "animate.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

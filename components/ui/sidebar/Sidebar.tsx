@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { CSSObject, List, styled, Theme } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 
 // Redux
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { closeSidebar } from "../../../reducers";
+import { useAppSelector } from "../../../hooks";
 
 // SideBarData
 import {
@@ -67,29 +66,19 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Sidebar = () => {
-  const dispatch = useAppDispatch();
   const [data, setData] = useState<SideBarData[]>([]);
 
   const { sidebar } = useAppSelector((state) => state.ux);
-  const { status } = useAppSelector((state) => state.auth);
-  const { hierarchy } = status;
-
-  const handleCloseSideBar = () => {
-    dispatch(closeSidebar());
-  };
+  const { user } = useAppSelector((state) => state.auth);
+  const { hierarchy } = user;
 
   useEffect(() => {
-    console.log(hierarchy);
-
     switch (hierarchy) {
       case Hierarchy.admin:
-        console.log("IS ADMIN");
         return setData(AdminSideBarStore);
       case Hierarchy.employee:
-        console.log("IS EMPLOYEE");
         return setData(EmployeeSideBarStore);
       case Hierarchy.client:
-        console.log("IS CLIENT");
         return setData(ClientSideBarStore);
       default:
         return setData([]);

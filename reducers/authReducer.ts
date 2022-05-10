@@ -4,13 +4,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IAuth } from "../interfaces";
 import { AppState } from "../store";
 
-// Enum
-import { Hierarchy } from "../enum"
+interface AuthAction {
+  payload: IAuth;
+}
 
-const initialState: IAuth = {
-  status: {
+interface AuthState {
+  user: IAuth;
+}
+
+const initialState: AuthState = {
+  user: {
     logged: false,
-    date: 0,
+    id: "",
+    name: "",
     hierarchy: null,
   },
 };
@@ -19,17 +25,15 @@ const authSlice = createSlice({
   name: "[AUTH]",
   initialState,
   reducers: {
-    login: (state) => {
-      state.status = {
-        ...state.status,
+    login: (state, action: AuthAction) => {
+      state.user = {
+        ...action.payload,
         logged: true,
-        date: Date.now(),
-        hierarchy: Hierarchy.admin,
       };
     },
     logout: (state) => {
-      state.status = {
-        ...initialState.status,
+      state.user = {
+        ...initialState.user,
       };
     },
   },

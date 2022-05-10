@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import type { NextPage } from "next";
 
@@ -11,6 +12,7 @@ import { newNotification } from "../reducers";
 
 // uuid
 import { v4 as uuid } from "uuid";
+import { requireNoAuth } from "../auth";
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -51,5 +53,13 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = requireNoAuth(
+  async (_ctx) => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default Home;

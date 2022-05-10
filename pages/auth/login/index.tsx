@@ -26,6 +26,14 @@ import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
 import NextLink from "next/link";
 
+// Cookie - Utils
+import Cookies from "js-cookie";
+
+// API - Next
+import { request } from "../../../api";
+import { GetServerSideProps } from "next";
+import { requireNoAuth } from "../../../auth";
+
 interface LoginInfo {
   email: string;
   password: string;
@@ -37,7 +45,7 @@ const LogInPage = () => {
 
   const { ux } = useAppSelector((state) => state);
 
-  const clicksCurrent = useMemo(() => ux.clicks, [ux.clicks])
+  const clicksCurrent = useMemo(() => ux.clicks, [ux.clicks]);
 
   const [clicked, setClicked] = useState(false);
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
@@ -58,10 +66,18 @@ const LogInPage = () => {
     [loginInfo.password, touchedPassword]
   );
 
-  const handleLoggin = () => {
-    dispatch(login())
-    router.push('/home')
-  }
+  const handleLogin = async () => {
+    const { data } = await request.post(`/user/login`, {
+      name: "Pepito",
+      hierarchy: "Admin",
+    });
+
+    const { token, user } = data;
+
+    Cookies.set("accessToken", JSON.stringify(token));
+    dispatch(login(user));
+    router.replace('/home')
+  };
 
   useEffect(() => {
     if (clicked) {
@@ -140,7 +156,7 @@ const LogInPage = () => {
                   }
                 />
               </Divider>
-              <Button variant="contained" fullWidth onClick={handleLoggin} >
+              <Button variant="contained" fullWidth onClick={handleLogin}>
                 SIGN IN
               </Button>
             </Box>
@@ -173,5 +189,13 @@ const LogInPage = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = requireNoAuth(
+  async (_ctx) => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default LogInPage;
