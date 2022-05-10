@@ -1,11 +1,13 @@
-import { Layout } from "../../../components/layout"
+import { ConnectedLayout, Layout } from "../../../components/layout";
 
 const AccountPage = () => {
-    return (
-        <Layout>
-            <h1>Account</h1>            
-        </Layout>
-    )
-}
+  return (
+    <Layout>
+      <ConnectedLayout>
+          <h1> Hola Jeje </h1>
+      </ConnectedLayout>
+    </Layout>
+  );
+};
 
-export default AccountPage
+export default AccountPage;

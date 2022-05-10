@@ -132,7 +132,7 @@ const LogInPage = () => {
               <Divider sx={{ marginBottom: "1em" }}>
                 <Chip
                   label={
-                    <NextLink href="restore-password" passHref>
+                    <NextLink href="/auth/restore-password" passHref>
                       <Link sx={{ textDecoration: "none" }}>
                         Forgot your password?
                       </Link>

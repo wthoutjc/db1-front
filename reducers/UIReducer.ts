@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 //Interfaces
-import { UI } from "../interfaces/ui";
-import { INotification } from "../interfaces";
+import { INotification, UI, SideBarData } from "../interfaces";
 import { AppState } from "../store";
 
 const initialState: UI = {
@@ -12,7 +11,6 @@ const initialState: UI = {
 interface NewNotification {
   payload: INotification;
 }
-
 interface RemoveNotification {
   payload: string;
 }
