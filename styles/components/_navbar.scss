@@ -1,7 +1,7 @@
 .navbar__appbar {
-  background-color: $blackPrimary;
+  background-color: $blackPrimary !important;
 }
-.navbar__connected > div{
+.navbar__connected > div {
   padding-left: 20px;
   background-color: $blackPrimary;
   box-shadow: 0px 0px 5px 1px black !important;
@@ -13,6 +13,7 @@
   justify-content: space-evenly;
 }
 .navbar__actions a {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  text-decoration: none !important;
 }

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import {
   AppBar,
   Box,
@@ -34,9 +33,6 @@ import {
 // UI
 import { ActiveLink } from "./";
 
-// Cookies
-import Cookies from "js-cookie";
-
 // NextAuth
 import { signOut } from "next-auth/react";
 
@@ -68,15 +64,10 @@ const ModuleLogged = () => {
   const { user } = useAppSelector((state) => state.auth);
   const { hierarchy } = user;
 
-  const router = useRouter();
-
   const handleLogout = () => {
     dispatch(turnOffRender());
     dispatch(logout());
     signOut();
-
-    // Cookies.remove("accessToken");
-    // router.push("/");
   };
 
   return (
