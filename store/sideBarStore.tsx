@@ -36,27 +36,27 @@ const AdminSideBarStore: SideBarData[] = [
 const EmployeeSideBarStore: SideBarData[] = [
   {
     to: "/home/account",
-    title: "",
+    title: "Account",
     Icon: <AccountBoxIcon />, 
   },
   {
     to: "/home/optionEMPLOYEE1",
-    title: "",
+    title: "optionEMPLOYEE1",
     Icon: <AddBoxIcon />,
   },
   {
     to: "/home/optionEMPLOYEE2",
-    title: "",
+    title: "optionEMPLOYEE2",
     Icon: <AddBoxIcon />,
   },
   {
     to: "/home/optionEMPLOYEE3",
-    title: "",
+    title: "optionEMPLOYEE3",
     Icon: <AddBoxIcon />,
   },
   {
     to: "/home/optionEMPLOYEE4",
-    title: "",
+    title: "optionEMPLOYEE4",
     Icon: <AddBoxIcon />,
   },
 ];
@@ -64,27 +64,27 @@ const EmployeeSideBarStore: SideBarData[] = [
 const ClientSideBarStore: SideBarData[] = [
   {
     to: "/home/account",
-    title: "",
+    title: "Account",
     Icon: <AccountBoxIcon />, 
   },
   {
     to: "/home/optionCLIENT1",
-    title: "",
+    title: "optionCLIENT1",
     Icon: <AddBoxIcon />,
   },
   {
     to: "/home/optionCLIENT2",
-    title: "",
+    title: "optionCLIENT2",
     Icon: <AddBoxIcon />,
   },
   {
     to: "/home/optionCLIENT3",
-    title: "",
+    title: "optionCLIENT3",
     Icon: <AddBoxIcon />,
   },
   {
     to: "/home/optionCLIENT4",
-    title: "",
+    title: "optionCLIENT4",
     Icon: <AddBoxIcon />,
   },
 ];

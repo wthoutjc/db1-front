@@ -33,6 +33,7 @@ import Cookies from "js-cookie";
 import { request } from "../../../api";
 import { GetServerSideProps } from "next";
 import { requireNoAuth } from "../../../auth";
+import { IAuth } from "../../../interfaces";
 
 interface LoginInfo {
   email: string;
@@ -40,7 +41,7 @@ interface LoginInfo {
 }
 
 const LogInPage = () => {
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const { ux } = useAppSelector((state) => state);
@@ -67,16 +68,19 @@ const LogInPage = () => {
   );
 
   const handleLogin = async () => {
-    const { data } = await request.post(`/user/login`, {
+    const { data } = await request.post<{
+      token: string;
+      user: IAuth;
+    }>(`/user/login`, {
       name: "Pepito",
-      hierarchy: "Admin",
+      hierarchy: "Client",
     });
 
     const { token, user } = data;
 
-    Cookies.set("accessToken", JSON.stringify(token));
+    Cookies.set("accessToken", token);
     dispatch(login(user));
-    router.replace('/home')
+    router.replace("/home");
   };
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next";
 import { Box } from "@mui/material";
 import { Layout } from "../../components/layout";
 
@@ -11,9 +10,6 @@ import { Hierarchy } from "../../enum";
 
 // Redux
 import { useAppSelector } from "../../hooks";
-
-// Auth
-import { requireAuth } from "../../auth";
 
 const HomePage = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -32,13 +28,5 @@ const HomePage = () => {
     </Layout>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = requireAuth(
-  async (_ctx) => {
-    return {
-      props: {},
-    };
-  }
-);
 
 export default HomePage;

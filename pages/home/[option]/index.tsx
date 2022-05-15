@@ -16,37 +16,37 @@ const HomeOptionPage: NextPage = () => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const options = ["account"];
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const options = ["account"];
 
-  return {
-    paths: options.map((option) => ({
-      params: { option },
-    })),
-    fallback: "blocking",
-  };
-};
+//   return {
+//     paths: options.map((option) => ({
+//       params: { option },
+//     })),
+//     fallback: "blocking",
+//   };
+// };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { id } = params as { id: string };
+// export const getStaticProps: GetStaticProps = async ({ params }) => {
+//   const { id } = params as { id: string };
 
-  const pokemon = { id: "1" };
+//   const pokemon = { id: "1" };
 
-  if (!pokemon) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+//   if (!pokemon) {
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return {
-    props: {
-      pokemon,
-    },
-    revalidate: 86399,
-  };
-};
+//   return {
+//     props: {
+//       pokemon,
+//     },
+//     revalidate: 86399,
+//   };
+// };
 
 export default HomeOptionPage;
