@@ -7,6 +7,9 @@
 .fade-animation {
   animation: opacityTransition 0.3s ease-in;
 }
+a {
+  text-decoration: none !important;
+}
 @keyframes opacityTransition {
   0% {
     opacity: 0;
