@@ -23,7 +23,7 @@
   font-weight: bold;
   margin-bottom: 0.3em;
 }
-.login__left > button {
+.login__left > div .login__providers {
   margin-bottom: 0.3em;
   font-size: 100%;
   min-width: 34px;
@@ -33,6 +33,7 @@
   border-radius: 100%;
   color: darken($color: $whitePrimary, $amount: 10);
   border-color: $whitePrimary;
+  margin-left: 1em;
   &:hover {
     border-color: $whitePrimary;
   }

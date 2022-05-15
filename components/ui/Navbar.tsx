@@ -37,6 +37,9 @@ import { ActiveLink } from "./";
 // Cookies
 import Cookies from "js-cookie";
 
+// NextAuth
+import { signOut } from "next-auth/react";
+
 interface ModuleAuthProps {
   setClicked: (boolean: boolean) => void;
 }
@@ -70,8 +73,10 @@ const ModuleLogged = () => {
   const handleLogout = () => {
     dispatch(turnOffRender());
     dispatch(logout());
-    Cookies.remove("accessToken");
-    router.push("/");
+    signOut();
+
+    // Cookies.remove("accessToken");
+    // router.push("/");
   };
 
   return (
@@ -95,8 +100,6 @@ const ModuleLogged = () => {
 };
 
 const Navbar = () => {
-  const router = useRouter();
-
   const [clicked, setClicked] = useState(false);
   const dispatch = useAppDispatch();
 

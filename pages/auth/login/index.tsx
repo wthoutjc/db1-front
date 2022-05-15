@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/router";
 import {
   Box,
   Button,
@@ -8,32 +7,30 @@ import {
   InputAdornment,
   Link,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Layout, AuthLayout } from "../../../components/layout";
 
 // Redux
 import { useAppSelector, useAppDispatch } from "../../../hooks";
-import { incrementClicks, login } from "../../../reducers";
+import { incrementClicks } from "../../../reducers";
 
 // Components
 // UI
 import { ActiveLink } from "../../../components/ui";
 
 // Icons
-import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
 import NextLink from "next/link";
 
-// Cookie - Utils
-import Cookies from "js-cookie";
-
 // API - Next
-import { request } from "../../../api";
-import { GetServerSideProps } from "next";
-import { requireNoAuth } from "../../../auth";
-import { IAuth } from "../../../interfaces";
+import { getProviders } from "next-auth/react";
+
+// Next Auth
+import { signIn } from "next-auth/react";
 
 interface LoginInfo {
   email: string;
@@ -41,12 +38,13 @@ interface LoginInfo {
 }
 
 const LogInPage = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const { ux } = useAppSelector((state) => state);
 
   const clicksCurrent = useMemo(() => ux.clicks, [ux.clicks]);
+
+  const [providers, setProviders] = useState<any>({});
 
   const [clicked, setClicked] = useState(false);
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
@@ -68,19 +66,9 @@ const LogInPage = () => {
   );
 
   const handleLogin = async () => {
-    const { data } = await request.post<{
-      token: string;
-      user: IAuth;
-    }>(`/user/login`, {
-      name: "Pepito",
-      hierarchy: "Client",
+    await signIn("credentials", {
+      ...loginInfo,
     });
-
-    const { token, user } = data;
-
-    Cookies.set("accessToken", token);
-    dispatch(login(user));
-    router.replace("/home");
   };
 
   useEffect(() => {
@@ -88,6 +76,12 @@ const LogInPage = () => {
       dispatch(incrementClicks());
     }
   }, [clicked, dispatch]);
+
+  useEffect(() => {
+    getProviders().then((prov) => {
+      setProviders(prov);
+    });
+  }, []);
 
   return (
     <Layout title={"App - Login"}>
@@ -101,9 +95,28 @@ const LogInPage = () => {
             }
           >
             <Typography variant="h4">Sign in to App - CRUD</Typography>
-            <Button variant="outlined">
-              <GoogleIcon />
-            </Button>
+            <Box display={"flex"}>
+              {Object.values(providers).map((provider: any) => {
+                if (provider.id === "credentials") {
+                  return null;
+                }
+
+                return (
+                  <Tooltip
+                    title={`Sign in with ${provider.name}`}
+                    key={provider.id}
+                  >
+                    <Button
+                      variant="outlined"
+                      className="login__providers"
+                      onClick={async () => await signIn(provider.id)}
+                    >
+                      {provider.name === "GitHub" && <GitHubIcon />}
+                    </Button>
+                  </Tooltip>
+                );
+              })}
+            </Box>
             <Typography variant="body2" sx={{ fontStyle: "italic" }}>
               or use your email account
             </Typography>
@@ -193,13 +206,5 @@ const LogInPage = () => {
     </Layout>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = requireNoAuth(
-  async (_ctx) => {
-    return {
-      props: {},
-    };
-  }
-);
 
 export default LogInPage;

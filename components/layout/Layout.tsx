@@ -9,12 +9,18 @@ import { Navbar } from "../ui";
 import Cookies from "js-cookie";
 
 // Redux
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { login } from "../../reducers";
 
 // JWT
 import decode from "jwt-decode";
 import { IAuth } from "../../interfaces";
+
+// NextAuth
+import { useSession } from "next-auth/react";
+
+// Interface - Enum - Types
+import { StatusAuth } from "../../enum";
 
 interface Props {
   title?: string;
@@ -22,10 +28,9 @@ interface Props {
 }
 
 const Layout = ({ title = "App", children }: Props) => {
-  const dispatch = useAppDispatch();
+  const { data, status } = useSession();
 
-  const { user } = useAppSelector((state) => state.auth);
-  const { logged } = user;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const accessToken = Cookies.get("accessToken");
@@ -33,9 +38,15 @@ const Layout = ({ title = "App", children }: Props) => {
     if (accessToken) {
       const { id, name, hierarchy } = decode<IAuth>(accessToken);
 
-      dispatch(login({id, name, hierarchy}));
+      dispatch(login({ id, name, hierarchy }));
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (status === StatusAuth.authenticated) {
+      dispatch(login(data?.user as IAuth));
+    }
+  }, [status, data, dispatch]);
 
   return (
     <Box

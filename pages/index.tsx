@@ -12,6 +12,8 @@ import { newNotification } from "../reducers";
 
 // uuid
 import { v4 as uuid } from "uuid";
+
+// Auth
 import { requireNoAuth } from "../auth";
 
 const Home: NextPage = () => {

@@ -1,27 +1,22 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
-// JWT
-import { verifyToken } from "./";
+// Next Auth
+import { getSession } from "next-auth/react";
 
 const requireNoAuth = (ssp: GetServerSideProps) => {
   return async (ctx: GetServerSidePropsContext) => {
-    const { req } = ctx;
+    const { req, query } = ctx;
 
-    const { accessToken = "" } = req.cookies;
-    let validToken = false;
+    const { p = "/home" } = query;
+    const session = await getSession({ req });
 
-    try {
-      await verifyToken(accessToken);
-      validToken = true;
-    } catch (error) {
-      validToken = false;
-    }
+    console.log(p);
 
-    if (validToken) {
+    if (session) {
       return {
         redirect: {
           permanent: false,
-          destination: "/home",
+          destination: p.toString(),
         },
       };
     }
@@ -30,3 +25,16 @@ const requireNoAuth = (ssp: GetServerSideProps) => {
 };
 
 export { requireNoAuth };
+
+// JWT
+// import { verifyToken } from "./";
+
+// const { accessToken = "" } = req.cookies;
+// let validToken = false;
+
+// try {
+//   await verifyToken(accessToken);
+//   validToken = true;
+// } catch (error) {
+//   validToken = false;
+// }

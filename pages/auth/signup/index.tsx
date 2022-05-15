@@ -4,25 +4,33 @@ import {
   Button,
   InputAdornment,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { AuthLayout, Layout } from "../../../components/layout";
 
+import { signInAuth } from "../../../auth";
+import { getProviders, signIn } from "next-auth/react";
+
 // Redux
 import { useAppSelector, useAppDispatch } from "../../../hooks";
-import { incrementClicks } from "../../../reducers";
+import { incrementClicks, newNotification } from "../../../reducers";
 
 // Components
 import { ActiveLink } from "../../../components/ui";
 
+// uuid
+import { v4 as uuid } from "uuid";
+
 // Icons
-import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
 import PersonIcon from "@mui/icons-material/Person";
 import PasswordIcon from "@mui/icons-material/Password";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import { GetServerSideProps } from "next";
-import { requireNoAuth } from "../../../auth";
+
+// Interfaces
+import { INotification } from "../../../interfaces";
 
 interface LoginInfo {
   email: string;
@@ -36,7 +44,9 @@ const SignUpPage = () => {
 
   const { ux } = useAppSelector((state) => state);
 
-  const currentClicks = useMemo(() => ux.clicks, [ux.clicks])
+  const currentClicks = useMemo(() => ux.clicks, [ux.clicks]);
+
+  const [providers, setProviders] = useState<any>({});
 
   const [clicked, setClicked] = useState(false);
 
@@ -47,29 +57,31 @@ const SignUpPage = () => {
     password2: "",
   });
 
-  const [touchedEmail, setTouchedEmail] = useState(false);
-  const [touchedName, setTouchedName] = useState(false);
-  const [touchedPassword, setTouchedPassword] = useState(false);
-  const [touchedPassword2, setTouchedPassword2] = useState(false);
+  const [touchedInputs, setTouchedInputs] = useState({
+    email: false,
+    name: false,
+    password: false,
+    password2: false,
+  });
 
   const validEmail = useMemo(
-    () => registerInfo.email.length <= 0 && touchedEmail,
-    [registerInfo.email, touchedEmail]
+    () => registerInfo.email.length <= 0 && touchedInputs.email,
+    [registerInfo.email, touchedInputs.email]
   );
 
   const validName = useMemo(
-    () => registerInfo.name.length <= 0 && touchedName,
-    [registerInfo.name, touchedName]
+    () => registerInfo.name.length <= 0 && touchedInputs.name,
+    [registerInfo.name, touchedInputs.name]
   );
 
   const validPassword = useMemo(
-    () => registerInfo.password.length <= 0 && touchedPassword,
-    [registerInfo.password, touchedPassword]
+    () => registerInfo.password.length <= 0 && touchedInputs.password,
+    [registerInfo.password, touchedInputs.password]
   );
 
   const validPassword2 = useMemo(
-    () => registerInfo.password2.length <= 0 && touchedPassword2,
-    [registerInfo.password2, touchedPassword2]
+    () => registerInfo.password2.length <= 0 && touchedInputs.password2,
+    [registerInfo.password2, touchedInputs.password2]
   );
 
   useEffect(() => {
@@ -77,6 +89,30 @@ const SignUpPage = () => {
       dispatch(incrementClicks());
     }
   }, [clicked, dispatch]);
+
+  useEffect(() => {
+    getProviders().then((prov) => {
+      setProviders(prov);
+    });
+  }, []);
+
+  const handleSignUp = async () => {
+    const { hasError, message } = await signInAuth({ ...registerInfo });
+    if (hasError) {
+      const payload: INotification = {
+        id: uuid(),
+        title: "Error:",
+        message: message!,
+        severity: "error",
+      };
+      dispatch(newNotification(payload));
+      return;
+    }
+
+    const { email, password } = registerInfo;
+
+    await signIn("credentials", { email, password });
+  };
 
   return (
     <Layout title={"App - Signup"}>
@@ -90,9 +126,28 @@ const SignUpPage = () => {
             }
           >
             <Typography variant="h4">Create Account</Typography>
-            <Button variant="outlined">
-              <GoogleIcon />
-            </Button>
+            <Box display={"flex"}>
+              {Object.values(providers).map((provider: any) => {
+                if (provider.id === "credentials") {
+                  return null;
+                }
+
+                return (
+                  <Tooltip
+                    title={`Sign up with ${provider.name}`}
+                    key={provider.id}
+                  >
+                    <Button
+                      variant="outlined"
+                      className="signup__providers"
+                      onClick={async () => await signIn(provider.id)}
+                    >
+                      {provider.name === "GitHub" && <GitHubIcon />}
+                    </Button>
+                  </Tooltip>
+                );
+              })}
+            </Box>
             <Typography variant="body2" sx={{ fontStyle: "italic" }}>
               or use your email account for registration
             </Typography>
@@ -106,7 +161,12 @@ const SignUpPage = () => {
                 label="E-mail"
                 error={validEmail}
                 helperText={validEmail ? "Invalid data" : "Type your e-mail..."}
-                onBlur={() => setTouchedEmail(true)}
+                onBlur={() =>
+                  setTouchedInputs({
+                    ...touchedInputs,
+                    email: true,
+                  })
+                }
                 onChange={(e) =>
                   setLoginInfo({ ...registerInfo, email: e.target.value })
                 }
@@ -125,7 +185,12 @@ const SignUpPage = () => {
                 label="Name"
                 error={validName}
                 helperText={validName ? "Invalid data" : "Type your name..."}
-                onBlur={() => setTouchedName(true)}
+                onBlur={() =>
+                  setTouchedInputs({
+                    ...touchedInputs,
+                    name: true,
+                  })
+                }
                 onChange={(e) =>
                   setLoginInfo({ ...registerInfo, name: e.target.value })
                 }
@@ -146,7 +211,12 @@ const SignUpPage = () => {
                 helperText={
                   validPassword ? "Invalid data" : "Type your new password..."
                 }
-                onBlur={() => setTouchedPassword(true)}
+                onBlur={() =>
+                  setTouchedInputs({
+                    ...touchedInputs,
+                    password: true,
+                  })
+                }
                 onChange={(e) =>
                   setLoginInfo({ ...registerInfo, password: e.target.value })
                 }
@@ -169,7 +239,12 @@ const SignUpPage = () => {
                     ? "Invalid data"
                     : "Confirm your new password..."
                 }
-                onBlur={() => setTouchedPassword2(true)}
+                onBlur={() =>
+                  setTouchedInputs({
+                    ...touchedInputs,
+                    password2: true,
+                  })
+                }
                 onChange={(e) =>
                   setLoginInfo({ ...registerInfo, password2: e.target.value })
                 }
@@ -181,7 +256,7 @@ const SignUpPage = () => {
                   ),
                 }}
               />
-              <Button variant="contained" fullWidth>
+              <Button variant="contained" fullWidth onClick={handleSignUp}>
                 SIGN UP
               </Button>
             </Box>
@@ -214,13 +289,5 @@ const SignUpPage = () => {
     </Layout>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = requireNoAuth(
-  async (_ctx) => {
-    return {
-      props: {},
-    };
-  }
-);
 
 export default SignUpPage;

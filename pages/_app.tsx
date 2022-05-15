@@ -1,6 +1,9 @@
 import "../styles/styles.scss";
 import type { AppProps } from "next/app";
 
+// Next Auth
+import { SessionProvider } from "next-auth/react";
+
 // MUI
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { darkTheme } from "../themes";
@@ -17,13 +20,15 @@ import "animate.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Provider store={store}>
-        <CssBaseline />
-        <Notifications />
-        <Component {...pageProps} />
-      </Provider>
-    </ThemeProvider>
+    <SessionProvider>
+      <ThemeProvider theme={darkTheme}>
+        <Provider store={store}>
+          <CssBaseline />
+          <Notifications />
+          <Component {...pageProps} />
+        </Provider>
+      </ThemeProvider>
+    </SessionProvider>
   );
 }
 
