@@ -5,15 +5,10 @@ import Head from "next/head";
 // Components
 import { Navbar } from "../ui";
 
-// Cookies
-import Cookies from "js-cookie";
-
 // Redux
 import { useAppDispatch } from "../../hooks";
 import { login } from "../../reducers";
 
-// JWT
-import decode from "jwt-decode";
 import { IAuth } from "../../interfaces";
 
 // NextAuth
@@ -31,16 +26,6 @@ const Layout = ({ title = "App", children }: Props) => {
   const { data, status } = useSession();
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const accessToken = Cookies.get("accessToken");
-
-    if (accessToken) {
-      const { id, name, hierarchy } = decode<IAuth>(accessToken);
-
-      dispatch(login({ id, name, hierarchy }));
-    }
-  }, [dispatch]);
 
   useEffect(() => {
     if (status === StatusAuth.authenticated) {

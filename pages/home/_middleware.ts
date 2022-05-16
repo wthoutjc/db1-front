@@ -11,18 +11,8 @@ const middleware = async (req: NextRequest, ev: NextFetchEvent) => {
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
-  
+
   return NextResponse.next();
 };
 
 export { middleware };
-
-// const session = await getSession({ req });
-
-// if (!session) {
-//   const url = req.nextUrl.clone();
-//   url.pathname = "/";
-//   return NextResponse.redirect(url);
-// }
-
-// return NextResponse.next();
