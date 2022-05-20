@@ -4,14 +4,26 @@ import { Layout } from "../../components/layout";
 // Components
 import { Admin, Client, Employee } from "../../components/roles";
 import { ConnectedLayout } from "../../components/layout";
+import { CTable } from "../../components/ui/table";
 
 // Enum
 import { Hierarchy } from "../../enum";
 
 // Redux
 import { useAppSelector } from "../../hooks";
+import { GetServerSideProps } from "next";
 
-const HomePage = () => {
+// Request
+import { request } from "../../api";
+
+//Interface
+import { DBDataUsers } from "../../interfaces";
+
+interface Props {
+  data: DBDataUsers[]
+}
+
+const HomePage = ( { data }:Props ) => {
   const { user } = useAppSelector((state) => state.auth);
 
   const { hierarchy } = user;
@@ -22,11 +34,23 @@ const HomePage = () => {
         <Box sx={{ padding: "0 1em" }}>
           {hierarchy === Hierarchy.admin && <Admin />}
           {hierarchy === Hierarchy.employee && <Employee />}
-          {hierarchy === Hierarchy.client && <Client />}
+          {hierarchy === Hierarchy.client && <Client data={data} />}
         </Box>
       </ConnectedLayout>
     </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+  const res = await fetch('http://localhost:3000/api/data/users')
+  const data = await res.json()
+
+  return {
+    props: {  
+      data,
+    }
+  }
+
+}
 
 export default HomePage;
