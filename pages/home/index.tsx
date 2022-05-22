@@ -20,10 +20,10 @@ import { request } from "../../api";
 import { DBDataUsers } from "../../interfaces";
 
 interface Props {
-  data: DBDataUsers[]
+  data: DBDataUsers[];
 }
 
-const HomePage = ( { data }:Props ) => {
+const HomePage = ({ data }: Props) => {
   const { user } = useAppSelector((state) => state.auth);
 
   const { hierarchy } = user;
@@ -41,15 +41,14 @@ const HomePage = ( { data }:Props ) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({params}) => {
-  const data = await request.get('/data/users')
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { data } = await request.get<DBDataUsers[]>("/data/users");
 
   return {
-    props: {  
+    props: {
       data,
-    }
-  }
-
-}
+    },
+  };
+};
 
 export default HomePage;
