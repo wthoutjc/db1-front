@@ -338,7 +338,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) =>  {
         },
     ]
 
-    return res.status(200).json(data)
+    return res.status(200).json([])
 }
 
 export default handler
