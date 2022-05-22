@@ -42,8 +42,7 @@ const HomePage = ( { data }:Props ) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
-  const res = await fetch('http://localhost:3000/api/data/users')
-  const data = await res.json()
+  const data = await request.get('/data/users')
 
   return {
     props: {  
