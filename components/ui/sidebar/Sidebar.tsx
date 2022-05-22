@@ -25,7 +25,6 @@ const openedMixin = (theme: Theme): CSSObject => ({
   width: DRAWER_WIDTH,
   backgroundColor: "#091621",
   position: "static",
-  height: "100%",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -35,7 +34,6 @@ const openedMixin = (theme: Theme): CSSObject => ({
 
 const closedMixin = (theme: Theme): CSSObject => ({
   position: "static",
-  height: "100%",
   backgroundColor: "#091621",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,

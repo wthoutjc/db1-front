@@ -15,8 +15,6 @@ enum Method {
   }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) =>  {
-    console.log(req.method);
-
     const data:DBDataUsers[] = [
         {
             id: '00000001',

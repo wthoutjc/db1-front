@@ -24,7 +24,6 @@ const SidebarItem = ({ item, open }: ItemSideBar) => {
       <Tooltip title={title}>
         <ListItemButton
           sx={{
-            minHeight: 48,
             justifyContent: open ? "initial" : "center",
             px: 2.5,
           }}
