@@ -1,11 +1,10 @@
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import type { NextPage } from "next";
-import Image from "next/image";
+import NextLink from "next/link";
 
 // Components
 import { Layout } from "../components/layout";
 import { CTable } from "../components/ui/table";
-import { ToggleButtons } from "../components/ui/toggleButton";
 
 // Redux
 import { useAppDispatch } from "../hooks";
@@ -101,10 +100,9 @@ const Home: NextPage = () => {
     <>
       <Layout title={"UDFJC - Unidad Deportiva"}>
         <Box
-          sx={{ p: 2 }}
+          sx={{ p: 2, boxSizing: 'border-box' }}
           display={"flex"}
           flexDirection={"column"}
-          width={"100vw"}
           height={"100vh"}
         >
           <Box
@@ -136,23 +134,27 @@ const Home: NextPage = () => {
               height={"100%"}
             >
               <Box>
-                <Button
-                  size="small"
-                  variant="contained"
-                  endIcon={<GroupsRoundedIcon />}
-                >
-                  Integrantes
-                </Button>
+                <NextLink href="/integrantes" passHref>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    endIcon={<GroupsRoundedIcon />}
+                  >
+                    Integrantes
+                  </Button>
+                </NextLink>
               </Box>
               <Box>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="success"
-                  endIcon={<BackupTableIcon />}
-                >
-                  Modelo
-                </Button>
+                <NextLink href="/modelo" passHref>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="success"
+                    endIcon={<BackupTableIcon />}
+                  >
+                    Modelo
+                  </Button>
+                </NextLink>
               </Box>
             </Box>
           </Box>
@@ -167,14 +169,16 @@ const Home: NextPage = () => {
             }}
             minHeight={"5%"}
           >
-            <Button
-              size="small"
-              variant="contained"
-              color="info"
-              endIcon={<AddIcon />}
-            >
-              Nuevo
-            </Button>
+            <NextLink href="/nuevo-empleado" passHref>
+              <Button
+                size="small"
+                variant="contained"
+                color="info"
+                endIcon={<AddIcon />}
+              >
+                Nuevo
+              </Button>
+            </NextLink>
           </Box>
           <Box
             sx={{
@@ -187,32 +191,6 @@ const Home: NextPage = () => {
             }}
           >
             <CTable data={DATA} />
-          </Box>
-          <Box
-            sx={{
-              backgroundColor: "#c8d6e5",
-              color: "#012",
-              borderRadius: "5px",
-              p: 2,
-            }}
-            minHeight={"10%"}
-          >
-            <Typography variant="h6">Integrantes</Typography>
-            <Divider />
-            <Box display={"flex"}>
-              <Typography variant="body1">
-                Ariel Ernesto Forero Meneses - 20181020135
-              </Typography>
-              <Typography variant="body1">
-                Julián Andrés Sánchez Rivera - 20181020169
-              </Typography>
-              <Typography variant="body1">
-                Juan Camilo Ramírez Rátiva - 20181020089
-              </Typography>
-              <Typography variant="body1">
-                Pablo Esteban Espinosa Granados - 20181020015
-              </Typography>
-            </Box>
           </Box>
         </Box>
       </Layout>

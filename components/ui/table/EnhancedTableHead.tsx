@@ -36,27 +36,27 @@ interface HeadCell {
 const headCells: readonly HeadCell[] = [
   {
     id: "idPersonal",
-    numeric: false,
-    disablePadding: false,
+    numeric: true,
+    disablePadding: true,
     label: "Personal",
   },
-  { id: "idSede", numeric: false, disablePadding: false, label: "Sede" },
-  { id: "idEspacio", numeric: false, disablePadding: false, label: "Espacio" },
-  { id: "idEquipo", numeric: false, disablePadding: false, label: "Equipo" },
+  { id: "idSede", numeric: true, disablePadding: true, label: "Sede" },
+  { id: "idEspacio", numeric: true, disablePadding: true, label: "Espacio" },
+  { id: "idEquipo", numeric: true, disablePadding: true, label: "Equipo" },
   {
     id: "SupIdEquipo",
-    numeric: false,
-    disablePadding: false,
+    numeric: true,
+    disablePadding: true,
     label: "Entrenador",
   },
   {
     id: "idUDeportiva",
-    numeric: false,
-    disablePadding: false,
+    numeric: true,
+    disablePadding: true,
     label: "U. Deportiva",
   },
-  { id: "nombre", numeric: false, disablePadding: false, label: "Hierarchy" },
-  { id: "apellido", numeric: false, disablePadding: false, label: "Apellido" },
+  { id: "nombre", numeric: true, disablePadding: true, label: "Hierarchy" },
+  { id: "apellido", numeric: true, disablePadding: true, label: "Apellido" },
 ];
 
 const EnhancedTableHead = (props: EnhancedTableProps) => {

@@ -161,6 +161,7 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="center"
                       >
                         {row.idPersonal}
                       </TableCell>
