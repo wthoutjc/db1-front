@@ -1,9 +1,11 @@
-import { GetServerSideProps } from "next";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import type { NextPage } from "next";
+import Image from "next/image";
 
 // Components
 import { Layout } from "../components/layout";
+import { CTable } from "../components/ui/table";
+import { ToggleButtons } from "../components/ui/toggleButton";
 
 // Redux
 import { useAppDispatch } from "../hooks";
@@ -13,8 +15,73 @@ import { newNotification } from "../reducers";
 // uuid
 import { v4 as uuid } from "uuid";
 
-// Auth
-import { requireNoAuth } from "../auth";
+// Icons
+import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
+import BackupTableIcon from "@mui/icons-material/BackupTable";
+import AddIcon from "@mui/icons-material/Add";
+
+const DATA = [
+  {
+    idPersonal: "1",
+    nombre: "Juan",
+    apellido: "Perez",
+    idSede: "1",
+    idEspacio: "1",
+    idEquipo: "1",
+    SupIdEquipo: "1",
+    idUDeportiva: "1",
+  },
+  {
+    idPersonal: "2",
+    nombre: "Juan",
+    apellido: "Perez",
+    idSede: "1",
+    idEspacio: "1",
+    idEquipo: "1",
+    SupIdEquipo: "1",
+    idUDeportiva: "1",
+  },
+  {
+    idPersonal: "3",
+    nombre: "Juan",
+    apellido: "Perez",
+    idSede: "1",
+    idEspacio: "1",
+    idEquipo: "1",
+    SupIdEquipo: "1",
+    idUDeportiva: "1",
+  },
+  {
+    idPersonal: "4",
+    nombre: "Juan",
+    apellido: "Perez",
+    idSede: "1",
+    idEspacio: "1",
+    idEquipo: "1",
+    SupIdEquipo: "1",
+    idUDeportiva: "1",
+  },
+  {
+    idPersonal: "5",
+    nombre: "Juan",
+    apellido: "Perez",
+    idSede: "1",
+    idEspacio: "1",
+    idEquipo: "1",
+    SupIdEquipo: "1",
+    idUDeportiva: "1",
+  },
+  {
+    idPersonal: "6",
+    nombre: "Juan",
+    apellido: "Perez",
+    idSede: "1",
+    idEspacio: "1",
+    idEquipo: "1",
+    SupIdEquipo: "1",
+    idUDeportiva: "1",
+  },
+];
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -32,36 +99,110 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Layout title={"Home - App"}>
-        <Box className="index__container">
-          <Box className="index__landing">
-            <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-              App - CRUD
-            </Typography>
-            <Typography variant="h5">
-              The best site to manage, analize and predict your data.
-            </Typography>
-            <Box className="index__options">
-              <Button onClick={handleNotification}> Learn more </Button>
-              <Divider orientation="vertical" flexItem />
-              <Button variant="contained"> About </Button>
+      <Layout title={"UDFJC - Unidad Deportiva"}>
+        <Box
+          sx={{ p: 2 }}
+          display={"flex"}
+          flexDirection={"column"}
+          width={"100vw"}
+          height={"100vh"}
+        >
+          <Box
+            sx={{
+              backgroundColor: "#c8d6e5",
+              color: "#012",
+              borderRadius: "5px",
+              p: 2,
+              mb: 3,
+            }}
+            width={"100%"}
+            display={"flex"}
+            justifyContent={"space-around"}
+            height={"15%"}
+          >
+            <Box width={"55%"}>
+              <Typography variant="h6">Empleado Management</Typography>
+              <Typography variant="body1">
+                Sistema de gestión de empleados en la unidad deportiva de la
+                Universidad Distrital Francisco José de Caldas
+              </Typography>
+            </Box>
+            <Box
+              display={"flex"}
+              sx={{ p: 1, backgroundColor: "#123", borderRadius: "5px" }}
+              width={"25%"}
+              justifyContent={"space-around"}
+              alignItems={"center"}
+              height={"100%"}
+            >
+              <Box>
+                <Button
+                  size="small"
+                  variant="contained"
+                  endIcon={<GroupsRoundedIcon />}
+                >
+                  Integrantes
+                </Button>
+              </Box>
+              <Box>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="success"
+                  endIcon={<BackupTableIcon />}
+                >
+                  Modelo
+                </Button>
+              </Box>
             </Box>
           </Box>
-          {/* <Box className="index__landing">
-            <h1>Hola</h1>
-          </Box> */}
+          <Box
+            sx={{
+              backgroundColor: "#c8d6e5",
+              color: "#012",
+              borderStartEndRadius: "5px",
+              borderStartStartRadius: "5px",
+              p: 2,
+              borderBottom: "1px solid #123",
+            }}
+            minHeight={"5%"}
+          >
+            <Button
+              size="small"
+              variant="contained"
+              color="info"
+              endIcon={<AddIcon />}
+            >
+              Nuevo
+            </Button>
+          </Box>
+          <Box
+            sx={{
+              backgroundColor: "#c8d6e5",
+              color: "#012",
+              borderEndEndRadius: "5px",
+              borderEndStartRadius: "5px",
+              p: 2,
+              mb: 3,
+            }}
+          >
+            <CTable data={DATA} />
+          </Box>
+          <Box
+            sx={{
+              backgroundColor: "#c8d6e5",
+              color: "#012",
+              borderRadius: "5px",
+              p: 2,
+            }}
+            minHeight={"10%"}
+          >
+            <Typography variant="h6">Integrantes</Typography>
+          </Box>
         </Box>
       </Layout>
     </>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = requireNoAuth(
-  async (_ctx) => {
-    return {
-      props: {},
-    };
-  }
-);
 
 export default Home;

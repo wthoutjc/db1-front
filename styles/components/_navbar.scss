@@ -1,12 +1,9 @@
 .navbar__appbar {
   background-color: $blackPrimary !important;
-}
-.navbar__connected > div {
-  padding-left: 20px;
-  background-color: $blackPrimary;
-  box-shadow: 0px 0px 5px 1px black !important;
+  box-shadow: 0px 0px 1px 1px black !important;
   transition: all 0.3s;
 }
+
 .navbar__actions {
   display: flex;
   width: 250px;

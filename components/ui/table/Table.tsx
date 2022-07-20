@@ -1,21 +1,15 @@
 import React, { useState, useMemo } from "react";
 
 import {
-  alpha,
   Box,
   Checkbox,
-  IconButton,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
-  Toolbar,
-  Tooltip,
-  Typography,
 } from "@mui/material";
 
 // Interface
@@ -55,7 +49,7 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
 
   // Order States
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof DBDataUsers>("id");
+  const [orderBy, setOrderBy] = useState<keyof DBDataUsers>("idPersonal");
 
   // Selected
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -80,7 +74,7 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.id);
+      const newSelecteds = data.map((n) => n.idPersonal);
       setSelected(newSelecteds);
       return;
     }
@@ -140,17 +134,17 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
                 .sort(getComparator(order, orderBy))
                 .slice(page * limit, page * limit + limit)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
+                  const isItemSelected = isSelected(row.idPersonal);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      onClick={(event) => handleClick(event, row.idPersonal)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.id}
+                      key={row.idPersonal}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -168,13 +162,15 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
                         scope="row"
                         padding="none"
                       >
-                        {row.id}
+                        {row.idPersonal}
                       </TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.age}</TableCell>
-                      <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">{row.date}</TableCell>
-                      <TableCell align="center">{row.role}</TableCell>
+                      <TableCell align="center">{row.idSede}</TableCell>
+                      <TableCell align="center">{row.idEspacio}</TableCell>
+                      <TableCell align="center">{row.idEquipo}</TableCell>
+                      <TableCell align="center">{row.SupIdEquipo}</TableCell>
+                      <TableCell align="center">{row.idUDeportiva}</TableCell>
+                      <TableCell align="center">{row.nombre}</TableCell>
+                      <TableCell align="center">{row.apellido}</TableCell>
                     </TableRow>
                   );
                 })}

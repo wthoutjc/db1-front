@@ -34,12 +34,29 @@ interface HeadCell {
 }
 
 const headCells: readonly HeadCell[] = [
-  { id: "id", numeric: true, disablePadding: false, label: "ID" },
-  { id: "name", numeric: false, disablePadding: true, label: "Name" },
-  { id: "age", numeric: true, disablePadding: false, label: "Age" },
-  { id: "email", numeric: false, disablePadding: true, label: "Email" },
-  { id: "date", numeric: true, disablePadding: false, label: "Date" },
-  { id: "role", numeric: false, disablePadding: true, label: "Hierarchy" },
+  {
+    id: "idPersonal",
+    numeric: false,
+    disablePadding: false,
+    label: "Personal",
+  },
+  { id: "idSede", numeric: false, disablePadding: false, label: "Sede" },
+  { id: "idEspacio", numeric: false, disablePadding: false, label: "Espacio" },
+  { id: "idEquipo", numeric: false, disablePadding: false, label: "Equipo" },
+  {
+    id: "SupIdEquipo",
+    numeric: false,
+    disablePadding: false,
+    label: "Entrenador",
+  },
+  {
+    id: "idUDeportiva",
+    numeric: false,
+    disablePadding: false,
+    label: "U. Deportiva",
+  },
+  { id: "nombre", numeric: false, disablePadding: false, label: "Hierarchy" },
+  { id: "apellido", numeric: false, disablePadding: false, label: "Apellido" },
 ];
 
 const EnhancedTableHead = (props: EnhancedTableProps) => {
@@ -74,7 +91,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={'center'}
+            align={"center"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
