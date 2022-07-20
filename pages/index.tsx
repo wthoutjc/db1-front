@@ -198,6 +198,21 @@ const Home: NextPage = () => {
             minHeight={"10%"}
           >
             <Typography variant="h6">Integrantes</Typography>
+            <Divider />
+            <Box display={"flex"}>
+              <Typography variant="body1">
+                Ariel Ernesto Forero Meneses - 20181020135
+              </Typography>
+              <Typography variant="body1">
+                Julián Andrés Sánchez Rivera - 20181020169
+              </Typography>
+              <Typography variant="body1">
+                Juan Camilo Ramírez Rátiva - 20181020089
+              </Typography>
+              <Typography variant="body1">
+                Pablo Esteban Espinosa Granados - 20181020015
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Layout>
