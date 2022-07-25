@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
 // Components
 import {
@@ -29,7 +30,8 @@ import { newNotification } from "../../reducers";
 
 // uuid
 import { v4 as uuid } from "uuid";
-import { INotification } from "../../interfaces";
+import { DBDataUsers, INotification } from "../../interfaces";
+import { GetServerSideProps } from "next";
 
 interface RegisterInfo {
   idPersonal: string;
@@ -42,8 +44,24 @@ interface RegisterInfo {
   apellido: string;
 }
 
-const NuevoEmpleadoPage = () => {
+interface SSRPRops {
+  empleado: DBDataUsers;
+}
+
+const EmpleadoPage = ({ empleado }: SSRPRops) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const {
+    APELLIDO,
+    IDEQUIPO,
+    IDESPACIO,
+    IDPERSONAL,
+    IDSEDE,
+    IDUDEPORTIVA,
+    NOMBRE,
+    SUPIDEQUIPO,
+  } = empleado;
 
   const {
     register,
@@ -55,7 +73,7 @@ const NuevoEmpleadoPage = () => {
   const handleSignUp = async (registerInfo: RegisterInfo) => {
     try {
       const res = await fetch(`http://127.0.0.1:5000`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -70,6 +88,7 @@ const NuevoEmpleadoPage = () => {
         severity: "info",
       };
       dispatch(newNotification(payload));
+      router.push("/");
     } catch (error) {
       console.error(error);
       reset();
@@ -125,6 +144,7 @@ const NuevoEmpleadoPage = () => {
                         ? errors.idPersonal.message
                         : "Digite la cédula del empleado"
                     }
+                    defaultValue={IDPERSONAL}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -144,7 +164,7 @@ const NuevoEmpleadoPage = () => {
                     id="filled-select-currency"
                     sx={{ mb: 2, width: "45%" }}
                     select
-                    defaultValue={""}
+                    defaultValue={IDSEDE}
                     label="Sede"
                     error={!!errors.idSede}
                     helperText={
@@ -174,7 +194,7 @@ const NuevoEmpleadoPage = () => {
                     id="filled-select-currency"
                     sx={{ mb: 2, width: "45%" }}
                     select
-                    defaultValue={""}
+                    defaultValue={IDESPACIO}
                     label="Espacio"
                     error={!!errors.idEspacio}
                     helperText={
@@ -205,7 +225,7 @@ const NuevoEmpleadoPage = () => {
                     sx={{ mb: 2, width: "45%" }}
                     select
                     label="Equipo"
-                    defaultValue={""}
+                    defaultValue={IDEQUIPO}
                     error={!!errors.idEquipo}
                     helperText={
                       !!errors.idEquipo
@@ -234,7 +254,7 @@ const NuevoEmpleadoPage = () => {
                     id="filled-select-currency"
                     sx={{ mb: 2, width: "45%" }}
                     select
-                    defaultValue={""}
+                    defaultValue={SUPIDEQUIPO}
                     label="Entrenador"
                     error={!!errors.supIdEquipo}
                     helperText={
@@ -264,7 +284,7 @@ const NuevoEmpleadoPage = () => {
                     id="filled-select-currency"
                     sx={{ mb: 2, width: "45%" }}
                     select
-                    defaultValue={""}
+                    defaultValue={IDUDEPORTIVA}
                     label="Unidad Deportiva"
                     error={!!errors.idUDeportiva}
                     helperText={
@@ -294,6 +314,7 @@ const NuevoEmpleadoPage = () => {
                     id="standard-helperText"
                     sx={{ mb: 2, width: "45%" }}
                     label="Nombre"
+                    defaultValue={NOMBRE}
                     error={!!errors.nombre}
                     autoComplete="current-name"
                     helperText={
@@ -325,6 +346,7 @@ const NuevoEmpleadoPage = () => {
                     id="standard-helperText"
                     sx={{ mb: 2, width: "45%" }}
                     label="Apellido"
+                    defaultValue={APELLIDO}
                     variant="filled"
                     error={!!errors.nombre}
                     autoComplete="current-name"
@@ -363,7 +385,7 @@ const NuevoEmpleadoPage = () => {
                 endIcon={<AppRegistrationIcon />}
                 onClick={() => {}}
               >
-                Registrar
+                Actualizar
               </Button>
             </form>
           </Box>
@@ -373,4 +395,22 @@ const NuevoEmpleadoPage = () => {
   );
 };
 
-export default NuevoEmpleadoPage;
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { id } = params as { id: string };
+
+  const res = await fetch(`http://127.0.0.1:5000/${id}`);
+  const data = await res.json();
+
+  console.log(typeof data);
+  console.log(data);
+
+  const { empleado } = data;
+
+  return {
+    props: {
+      empleado: JSON.parse(empleado),
+    },
+  };
+};
+
+export default EmpleadoPage;

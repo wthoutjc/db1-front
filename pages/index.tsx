@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import { Box, Button, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import NextLink from "next/link";
@@ -18,71 +19,17 @@ import { v4 as uuid } from "uuid";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import BackupTableIcon from "@mui/icons-material/BackupTable";
 import AddIcon from "@mui/icons-material/Add";
+import axios from "axios";
 
-const DATA = [
-  {
-    idPersonal: "1",
-    nombre: "Juan",
-    apellido: "Perez",
-    idSede: "1",
-    idEspacio: "1",
-    idEquipo: "1",
-    SupIdEquipo: "1",
-    idUDeportiva: "1",
-  },
-  {
-    idPersonal: "2",
-    nombre: "Juan",
-    apellido: "Perez",
-    idSede: "1",
-    idEspacio: "1",
-    idEquipo: "1",
-    SupIdEquipo: "1",
-    idUDeportiva: "1",
-  },
-  {
-    idPersonal: "3",
-    nombre: "Juan",
-    apellido: "Perez",
-    idSede: "1",
-    idEspacio: "1",
-    idEquipo: "1",
-    SupIdEquipo: "1",
-    idUDeportiva: "1",
-  },
-  {
-    idPersonal: "4",
-    nombre: "Juan",
-    apellido: "Perez",
-    idSede: "1",
-    idEspacio: "1",
-    idEquipo: "1",
-    SupIdEquipo: "1",
-    idUDeportiva: "1",
-  },
-  {
-    idPersonal: "5",
-    nombre: "Juan",
-    apellido: "Perez",
-    idSede: "1",
-    idEspacio: "1",
-    idEquipo: "1",
-    SupIdEquipo: "1",
-    idUDeportiva: "1",
-  },
-  {
-    idPersonal: "6",
-    nombre: "Juan",
-    apellido: "Perez",
-    idSede: "1",
-    idEspacio: "1",
-    idEquipo: "1",
-    SupIdEquipo: "1",
-    idUDeportiva: "1",
-  },
-];
+// Interfaces
+import { DBDataUsers } from "../interfaces";
+import { useEffect } from "react";
 
-const Home: NextPage = () => {
+interface SSRProps {
+  empleados: DBDataUsers[];
+}
+
+const Home: NextPage<SSRProps> = ({ empleados }) => {
   const dispatch = useAppDispatch();
 
   const handleNotification = () => {
@@ -100,7 +47,7 @@ const Home: NextPage = () => {
     <>
       <Layout title={"UDFJC - Unidad Deportiva"}>
         <Box
-          sx={{ p: 2, boxSizing: 'border-box' }}
+          sx={{ p: 2, boxSizing: "border-box" }}
           display={"flex"}
           flexDirection={"column"}
           height={"100vh"}
@@ -190,12 +137,23 @@ const Home: NextPage = () => {
               mb: 3,
             }}
           >
-            <CTable data={DATA} />
+            <CTable data={empleados} />
           </Box>
         </Box>
       </Layout>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { data } = await axios.get<SSRProps>(`${process.env.API_URL}`);
+  const { empleados } = data;
+
+  return {
+    props: {
+      empleados,
+    },
+  };
 };
 
 export default Home;

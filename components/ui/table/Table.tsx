@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 import {
   Box,
@@ -49,7 +49,7 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
 
   // Order States
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof DBDataUsers>("idPersonal");
+  const [orderBy, setOrderBy] = useState<keyof DBDataUsers>("IDPERSONAL");
 
   // Selected
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -74,7 +74,7 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.idPersonal);
+      const newSelecteds = data.map((n) => n.IDPERSONAL);
       setSelected(newSelecteds);
       return;
     }
@@ -117,7 +117,7 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} selected={selected[0]} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -134,17 +134,17 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
                 .sort(getComparator(order, orderBy))
                 .slice(page * limit, page * limit + limit)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.idPersonal);
+                  const isItemSelected = isSelected(row.IDPERSONAL);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.idPersonal)}
+                      onClick={(event) => handleClick(event, row.IDPERSONAL)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.idPersonal}
+                      key={row.IDPERSONAL}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -163,15 +163,29 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
                         padding="none"
                         align="center"
                       >
-                        {row.idPersonal}
+                        {row.IDPERSONAL}
                       </TableCell>
-                      <TableCell align="center">{row.idSede}</TableCell>
-                      <TableCell align="center">{row.idEspacio}</TableCell>
-                      <TableCell align="center">{row.idEquipo}</TableCell>
-                      <TableCell align="center">{row.SupIdEquipo}</TableCell>
-                      <TableCell align="center">{row.idUDeportiva}</TableCell>
-                      <TableCell align="center">{row.nombre}</TableCell>
-                      <TableCell align="center">{row.apellido}</TableCell>
+                      <TableCell align="center">
+                        {row.IDSEDE || "No registra"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.IDESPACIO || "No registra"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.IDEQUIPO || "No registra"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.SUPIDEQUIPO || "No registra"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.IDUDEPORTIVA || "No registra"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.NOMBRE || "No registra"}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.APELLIDO || "No registra"}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

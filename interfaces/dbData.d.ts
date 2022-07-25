@@ -1,10 +1,10 @@
 export interface DBDataUsers {
-    idPersonal: string,
-    idSede: string,
-    idEspacio: string,
-    idEquipo: string,
-    SupIdEquipo: string,
-    idUDeportiva: string,
-    nombre: string,
-    apellido: string,
+    IDPERSONAL: string,
+    IDSEDE: string,
+    IDESPACIO: string,
+    IDEQUIPO: string,
+    SUPIDEQUIPO: string,
+    IDUDEPORTIVA: string,
+    NOMBRE: string,
+    APELLIDO: string,
 }
