@@ -168,7 +168,9 @@ const NuevoEmpleadoPage = () => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -198,7 +200,9 @@ const NuevoEmpleadoPage = () => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -228,7 +232,9 @@ const NuevoEmpleadoPage = () => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -236,29 +242,20 @@ const NuevoEmpleadoPage = () => {
                     select
                     defaultValue={""}
                     label="Entrenador"
-                    error={!!errors.supIdEquipo}
-                    helperText={
-                      !!errors.supIdEquipo
-                        ? errors.supIdEquipo.message
-                        : "Seleccione el entrenador del empleado"
-                    }
+                    helperText="Seleccione el entrenador del empleado"
                     variant="filled"
-                    {...register("supIdEquipo", {
-                      required: "El campo entrenador es obligatorio",
-                    })}
+                    {...register("supIdEquipo")}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <SportsIcon
-                            sx={{
-                              color: !!errors.idPersonal ? "red" : "white",
-                            }}
-                          />
+                          <SportsIcon />
                         </InputAdornment>
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -288,7 +285,9 @@ const NuevoEmpleadoPage = () => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="standard-helperText"

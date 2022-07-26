@@ -63,7 +63,6 @@ const Home: NextPage<SSRProps> = ({ empleados }) => {
             width={"100%"}
             display={"flex"}
             justifyContent={"space-around"}
-            height={"15%"}
           >
             <Box width={"55%"}>
               <Typography variant="h6">Empleado Management</Typography>

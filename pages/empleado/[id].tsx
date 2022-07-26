@@ -188,7 +188,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -218,7 +220,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -248,7 +252,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -263,9 +269,7 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                         : "Seleccione el entrenador del empleado"
                     }
                     variant="filled"
-                    {...register("supIdEquipo", {
-                      required: "El campo entrenador es obligatorio",
-                    })}
+                    {...register("supIdEquipo")}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -278,7 +282,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
+                    <MenuItem value={""}>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
                   <TextField
                     id="filled-select-currency"
@@ -308,7 +314,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
+                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
+                    <MenuItem value={"2"} disabled>2</MenuItem>
                   </TextField>
                   <TextField
                     id="standard-helperText"
