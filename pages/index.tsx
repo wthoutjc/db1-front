@@ -26,7 +26,7 @@ import { DBDataUsers } from "../interfaces";
 import { useEffect } from "react";
 
 interface SSRProps {
-  empleados: DBDataUsers[];
+  empleados: DBDataUsers[] | null;
 }
 
 const Home: NextPage<SSRProps> = ({ empleados }) => {
@@ -136,7 +136,7 @@ const Home: NextPage<SSRProps> = ({ empleados }) => {
               mb: 3,
             }}
           >
-            <CTable data={empleados} />
+            <CTable data={empleados || []} />
           </Box>
         </Box>
       </Layout>
@@ -145,14 +145,23 @@ const Home: NextPage<SSRProps> = ({ empleados }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { data } = await axios.get<SSRProps>(`${process.env.API_URL}`);
-  const { empleados } = data;
+  try {
+    const { data } = await axios.get<SSRProps>(`${process.env.API_URL}`);
+    const { empleados } = data || { empleados: [] };
 
-  return {
-    props: {
-      empleados,
-    },
-  };
+    return {
+      props: {
+        empleados,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        empleados: [],
+      },
+    };
+  }
 };
 
 export default Home;
