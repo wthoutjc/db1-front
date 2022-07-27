@@ -113,7 +113,7 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
             p: 2,
           }}
         >
-          <Typography variant="h5">Registrar nuevo empleado</Typography>
+          <Typography variant="h5">Actualizar nuevo empleado</Typography>
           <Divider sx={{ mt: 1, mb: 3 }} />
           <Box width={"100%"}>
             <form

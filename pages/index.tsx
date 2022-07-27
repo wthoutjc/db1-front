@@ -23,7 +23,6 @@ import axios from "axios";
 
 // Interfaces
 import { DBDataUsers } from "../interfaces";
-import { useEffect } from "react";
 
 interface SSRProps {
   empleados: DBDataUsers[];

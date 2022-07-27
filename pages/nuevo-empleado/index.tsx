@@ -148,8 +148,8 @@ const NuevoEmpleadoPage = () => {
                     label="Sede"
                     error={!!errors.idSede}
                     helperText={
-                      !!errors.idPersonal
-                        ? errors.idPersonal.message
+                      !!errors.idSede
+                        ? errors.idSede.message
                         : "Seleccione la sede del empleado"
                     }
                     variant="filled"
@@ -161,7 +161,7 @@ const NuevoEmpleadoPage = () => {
                         <InputAdornment position="start">
                           <ApartmentIcon
                             sx={{
-                              color: !!errors.idPersonal ? "red" : "white",
+                              color: !!errors.idSede ? "red" : "white",
                             }}
                           />
                         </InputAdornment>
