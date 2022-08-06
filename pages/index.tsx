@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 // Components
 import { Layout } from "../components/layout";
 
-import { Auxiliar } from "../components/roles";
+import { Auxiliar, DDeportivo} from "../components/roles";
 
 // Redux
 import { useAppSelector } from "../hooks";
@@ -25,8 +25,8 @@ const Home: NextPage<SSRProps> = ({ empleados }) => {
   return (
     <>
       <Layout title={"UDFJC - Unidad Deportiva"}>
-        {role === "auxiliar" && <Auxiliar empleados={empleados} />}
-        {role === "ddeportivo" && <Box>Deportivo</Box>}
+        {role === "auxiliar" && <Auxiliar />}
+        {role === "ddeportivo" && <DDeportivo />}
       </Layout>
     </>
   );

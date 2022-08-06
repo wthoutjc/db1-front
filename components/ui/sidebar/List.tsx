@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Divider,
   FormControl,
   FormControlLabel,
@@ -17,14 +16,11 @@ import {
 
 // Redux
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { toggleSidebar, setRole } from "../../../reducers";
+import { toggleSidebar, setRole, setLogged } from "../../../reducers";
 import { useState } from "react";
 
 // Components
 import { DateForm } from "./";
-
-// Icons
-import SaveIcon from "@mui/icons-material/Save";
 
 const List = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +33,12 @@ const List = () => {
   };
 
   const handleRoleChange = (e: SelectChangeEvent<string>) => {
+    dispatch(
+      setLogged({
+        logged: false,
+      })
+    );
+
     dispatch(
       setRole({
         role: e.target.value as string,
