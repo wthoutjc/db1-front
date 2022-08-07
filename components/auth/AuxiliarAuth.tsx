@@ -13,14 +13,9 @@ import SchoolIcon from "@mui/icons-material/School";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
 
-// SWR
-import useSWR from "swr";
-
 // Redux
 import { useAppDispatch } from "../../hooks";
 import { setLogged } from "../../reducers";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface LoginProps {
   cod: string;
@@ -35,29 +30,25 @@ const AuxiliarAuth = () => {
     formState: { errors },
   } = useForm<LoginProps>();
 
-  // SWR - Client side
-  // const { data, error } = useSWR("/api/users", fetcher);
-
   const onSubmit = async (data: LoginProps) => {
-    const res = await fetch(`http://127.0.0.1:5000/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    // const res = await fetch(`http://127.0.0.1:5000/login`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // });
 
-    const jsonData = (await res.json()) as { logged: boolean; status: string };
+    // const jsonData = (await res.json()) as { logged: boolean; status: string };
 
-    console.log(jsonData)
+    // if (jsonData.status === "success") {
+    // }
 
-    if (jsonData.status === "success") {
-      dispatch(
-        setLogged({
-          logged: true,
-        })
-      );
-    }
+    dispatch(
+      setLogged({
+        logged: true,
+      })
+    );
   };
 
   return (

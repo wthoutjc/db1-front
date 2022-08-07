@@ -1,28 +1,11 @@
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Box,
-  Button,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 // Redux
 import { useAppSelector } from "../../hooks";
 
 // Components
 import { DDeportivoAuth } from "../auth";
-import {
-  AuxiliarDocente,
-  AuxiliarMiembro,
-  AuxiliarPasante,
-} from "./AuxiliarComponents";
 
-// Icons
-import SchoolIcon from "@mui/icons-material/School";
-import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
 import { useState } from "react";
 
 type Render = 0 | 1 | 2;
@@ -33,6 +16,36 @@ const DDeportivo = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: Render) => {
     setRender(newValue);
+  };
+
+  const handlePDFPasante = async () => {
+    const res = await fetch(`http://127.0.0.1:5000/pdf-pasante`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const jsonData = (await res.json()) as { logged: boolean; status: string };
+
+    if (jsonData.status === "success") {
+      console.log(jsonData);
+    }
+  };
+
+  const handlePDFMiembros = async () => {
+    const res = await fetch(`http://127.0.0.1:5000/pdf-miembro`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const jsonData = (await res.json()) as { logged: boolean; status: string };
+
+    if (jsonData.status === "success") {
+      console.log(jsonData);
+    }
   };
 
   return (
@@ -66,8 +79,12 @@ const DDeportivo = () => {
               boxShadow: "0px 0px 1px 0px white",
             }}
           >
-            <Button variant="contained">Reporte pasantes</Button>
-            <Button variant="contained">Reporte miembros de los equipos</Button>
+            <Button variant="contained" onClick={handlePDFPasante}>
+              Reporte pasantes
+            </Button>
+            <Button variant="contained" onClick={handlePDFMiembros}>
+              Reporte miembros de los equipos
+            </Button>
           </Box>
           <Box
             sx={{

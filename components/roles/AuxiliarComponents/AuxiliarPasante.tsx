@@ -37,7 +37,13 @@ interface ExpandMoreProps extends IconButtonProps {
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
-  return <IconButton {...other} />;
+  return (
+    <>
+      <Tooltip title={"Ver materiales"}>
+        <IconButton {...other} />
+      </Tooltip>
+    </>
+  );
 })(({ theme, expand }) => ({
   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
   marginLeft: "auto",
@@ -64,8 +70,20 @@ const AuxiliarPasante = () => {
     setExpanded(!expanded);
   };
 
-  const onSubmit = (data: PasanteProps) => {
-    console.log(data);
+  const onSubmit = async (data: PasanteProps) => {
+    const res = await fetch(`http://127.0.0.1:5000/pasante/${data.code}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const jsonData = (await res.json()) as { logged: boolean; status: string };
+
+    if (jsonData.status === "success") {
+      console.log(jsonData);
+    }
   };
 
   return (
@@ -150,54 +168,40 @@ const AuxiliarPasante = () => {
                 subheader="September 14, 2016"
               />
               <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  display={"flex"}
-                  sx={{ mb: 2 }}
-                >
-                  Práctica libre:{" "}
+                <Box display={"flex"} sx={{ mb: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Práctica libre:{" "}
+                  </Typography>
                   <p style={{ color: "white", marginLeft: 10 }}>Práctica 1</p>
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  display={"flex"}
-                  sx={{ mb: 2 }}
-                >
-                  Espacio:{" "}
+                </Box>
+                <Box display={"flex"} sx={{ mb: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Espacio:{" "}
+                  </Typography>
                   <p style={{ color: "white", marginLeft: 10 }}>Espacio 1</p>
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  display={"flex"}
-                  sx={{ mb: 2 }}
-                >
-                  Deporte:{" "}
+                </Box>
+                <Box display={"flex"} sx={{ mb: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Deporte:{" "}
+                  </Typography>
                   <p style={{ color: "white", marginLeft: 10 }}>Deporte 1</p>
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  display={"flex"}
-                  sx={{ mb: 2 }}
-                >
-                  Número de inscritos:{" "}
+                </Box>
+                <Box display={"flex"} sx={{ mb: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Número de inscritos:{" "}
+                  </Typography>
                   <p style={{ color: "white", marginLeft: 10 }}>25</p>
-                </Typography>
+                </Box>
               </CardContent>
               <CardActions disableSpacing>
-                <Tooltip title="Ver materiales">
-                  <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                  >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
-                </Tooltip>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
               </CardActions>
               <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
