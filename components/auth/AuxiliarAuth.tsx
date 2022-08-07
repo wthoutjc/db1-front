@@ -39,7 +39,7 @@ const AuxiliarAuth = () => {
   // const { data, error } = useSWR("/api/users", fetcher);
 
   const onSubmit = async (data: LoginProps) => {
-    const res = await fetch("/api/users", {
+    const res = await fetch(`${process.env.API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
