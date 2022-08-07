@@ -38,11 +38,24 @@ const AuxiliarAuth = () => {
   // SWR - Client side
   // const { data, error } = useSWR("/api/users", fetcher);
 
-  const onSubmit = (data: LoginProps) => {
-    console.log(data);
-    dispatch(setLogged({
-      logged: true,
-    }));
+  const onSubmit = async (data: LoginProps) => {
+    const res = await fetch("/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const jsonData = (await res.json()) as { logged: boolean; status: string };
+
+    if (jsonData.status === "success") {
+      dispatch(
+        setLogged({
+          logged: true,
+        })
+      );
+    }
   };
 
   return (
