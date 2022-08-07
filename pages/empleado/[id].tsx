@@ -188,7 +188,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
-                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
+                    <MenuItem value={""} disabled>
+                      Seleccionar
+                    </MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
                     <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
@@ -220,7 +222,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
-                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
+                    <MenuItem value={""} disabled>
+                      Seleccionar
+                    </MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
                     <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
@@ -252,7 +256,9 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
-                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
+                    <MenuItem value={""} disabled>
+                      Seleccionar
+                    </MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
                     <MenuItem value={"2"}>2</MenuItem>
                   </TextField>
@@ -314,9 +320,13 @@ const EmpleadoPage = ({ empleado }: SSRPRops) => {
                       ),
                     }}
                   >
-                    <MenuItem value={""} disabled>Seleccionar</MenuItem>
+                    <MenuItem value={""} disabled>
+                      Seleccionar
+                    </MenuItem>
                     <MenuItem value={"1"}>1</MenuItem>
-                    <MenuItem value={"2"} disabled>2</MenuItem>
+                    <MenuItem value={"2"} disabled>
+                      2
+                    </MenuItem>
                   </TextField>
                   <TextField
                     id="standard-helperText"
@@ -408,9 +418,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const res = await fetch(`http://127.0.0.1:5000/${id}`);
   const data = await res.json();
-
-  console.log(typeof data);
-  console.log(data);
 
   const { empleado } = data;
 

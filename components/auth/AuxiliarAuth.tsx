@@ -39,7 +39,7 @@ const AuxiliarAuth = () => {
   // const { data, error } = useSWR("/api/users", fetcher);
 
   const onSubmit = async (data: LoginProps) => {
-    const res = await fetch(`${process.env.API_URL}/login`, {
+    const res = await fetch(`http://127.0.0.1:5000/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,6 +48,8 @@ const AuxiliarAuth = () => {
     });
 
     const jsonData = (await res.json()) as { logged: boolean; status: string };
+
+    console.log(jsonData)
 
     if (jsonData.status === "success") {
       dispatch(

@@ -1,10 +1,9 @@
-import { GetServerSideProps } from "next";
 import type { NextPage } from "next";
 
 // Components
 import { Layout } from "../components/layout";
 
-import { Auxiliar, DDeportivo} from "../components/roles";
+import { Auxiliar, DDeportivo } from "../components/roles";
 
 // Redux
 import { useAppSelector } from "../hooks";
@@ -30,26 +29,6 @@ const Home: NextPage<SSRProps> = ({ empleados }) => {
       </Layout>
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  try {
-    const { data } = await axios.get<SSRProps>(`${process.env.API_URL}`);
-    const { empleados } = data || { empleados: [] };
-
-    return {
-      props: {
-        empleados,
-      },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        empleados: [],
-      },
-    };
-  }
 };
 
 export default Home;
