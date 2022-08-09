@@ -62,7 +62,7 @@ const DDeportivo = () => {
               backgroundColor: "#001122",
               borderStartEndRadius: 25,
               borderStartStartRadius: 25,
-              overflow: "hidden",
+              overflow: "auto",
               width: "100%",
               p: 2,
               boxShadow: "0px 0px 1px 0px white",

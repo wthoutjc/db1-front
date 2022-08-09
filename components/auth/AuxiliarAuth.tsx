@@ -52,7 +52,7 @@ const AuxiliarAuth = () => {
   };
 
   return (
-    <Box display={"flex"} sx={{ width: "100%", height: "40%" }}>
+    <Box display={"flex"} sx={{ width: "100%" }}>
       <Box
         sx={{
           p: 2,
@@ -60,14 +60,12 @@ const AuxiliarAuth = () => {
           borderEndStartRadius: 3,
           borderStartStartRadius: 3,
           width: "100%",
-          height: "100%",
         }}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
           style={{
             width: "100%",
-            height: "100%",
           }}
         >
           <Box
@@ -75,7 +73,6 @@ const AuxiliarAuth = () => {
               boxSizing: "border-box",
               padding: "1em",
               width: "100%",
-              height: "100%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-around",
@@ -123,7 +120,6 @@ const AuxiliarAuth = () => {
           borderEndEndRadius: 3,
           borderStartEndRadius: 3,
           width: "100%",
-          height: "100%",
           display: "flex",
           flexDirection: "column",
         }}

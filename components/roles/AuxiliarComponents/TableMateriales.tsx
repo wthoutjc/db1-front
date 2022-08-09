@@ -20,8 +20,6 @@ import {
 } from "@mui/material";
 
 // Icons
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 
 // Utils
@@ -29,39 +27,25 @@ import { visuallyHidden } from "@mui/utils";
 
 interface Data {
   name: string;
-  state: string;
   sede: string;
   deporte: string;
 }
 
-function createData(
-  name: string,
-  state: string,
-  sede: string,
-  deporte: string
-): Data {
+function createData(name: string, sede: string, deporte: string): Data {
   return {
     name,
-    state,
     sede,
     deporte,
   };
 }
 
 const rows = [
-  createData("Cupcake", "305", "3.7", "67"),
-  createData("Donut", "452", "25.0", "51"),
-  createData("Eclair", "262", "16.0", "24"),
-  createData("Frozen yoghurt", "159", " 6.0", "24"),
-  createData("Gingerbread", "356", "16.0", "49"),
-  createData("Honeycomb", "408", " 3.2", "87"),
-  createData("Ice cream sandwich", "237", " 9.0", "37"),
-  createData("Jelly Bean", "375", "0.0", "94"),
-  createData("KitKat", "518", "26.0", "65"),
-  createData("Lollipop", "392", " 0.2", "98"),
-  createData("Marshmallow", "31", "8.0", "81"),
-  createData("Oreo", "437", "18.0", "63"),
-  createData("Nougat", "360", "19.0", "9,"),
+  createData("Colchoneta", "Sede Chapinero", "Fila"),
+  createData("Guantes box", "Sede Macarena", "Under Armour"),
+  createData("Saco boxeo", "Sede Macarena", "Under Armour"),
+  createData("Chaleco boxeo", "Sede Macarena", "Under Armour"),
+  createData("Balón baloncesto", "Sede Porvenir", "Adidas"),
+  createData("Balón fútbol", "Sede Porvenir", "Nike"),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -116,12 +100,6 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: true,
     label: "Material",
-  },
-  {
-    id: "state",
-    numeric: true,
-    disablePadding: false,
-    label: "Estado",
   },
   {
     id: "sede",
@@ -295,7 +273,6 @@ const TableMateriales = () => {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -370,7 +347,6 @@ const TableMateriales = () => {
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.state}</TableCell>
                       <TableCell align="right">{row.sede}</TableCell>
                       <TableCell align="right">{row.deporte}</TableCell>
                     </TableRow>

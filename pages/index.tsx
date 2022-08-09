@@ -8,17 +8,7 @@ import { Auxiliar, DDeportivo } from "../components/roles";
 // Redux
 import { useAppSelector } from "../hooks";
 
-import axios from "axios";
-
-// Interfaces
-import { DBDataUsers } from "../interfaces";
-import { Box } from "@mui/material";
-
-interface SSRProps {
-  empleados: DBDataUsers[] | null;
-}
-
-const Home: NextPage<SSRProps> = ({ empleados }) => {
+const Home: NextPage = () => {
   const { role } = useAppSelector((state) => state.info);
 
   return (

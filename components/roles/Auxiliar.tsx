@@ -36,7 +36,10 @@ const Auxiliar = () => {
 
   return (
     <Box
-      sx={{ p: 2, boxSizing: "border-box" }}
+      sx={{
+        p: 2,
+        boxSizing: "border-box",
+      }}
       display={"flex"}
       flexDirection={"column"}
       height={"100vh"}
@@ -47,7 +50,7 @@ const Auxiliar = () => {
             backgroundColor: "#112233",
             borderStartEndRadius: 25,
             borderStartStartRadius: 25,
-            overflow: "hidden",
+            overflow: "auto",
             width: "100%",
           }}
         >
