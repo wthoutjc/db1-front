@@ -199,7 +199,7 @@ const AuxiliarDocente = () => {
                       </Avatar>
                     }
                     title={`Docente: ${docente.name}`}
-                    subheader={moment(Date.now()).format("DD/MM/YYYY")}
+                    subheader={`${moment(Date.now()).format("DD/MM/YYYY")} • ${docente.sede} • ${docente.id}`}
                   />
                   <CardContent
                     sx={{ display: "flex", flexDirection: "column" }}

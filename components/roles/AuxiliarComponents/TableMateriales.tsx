@@ -26,26 +26,67 @@ import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import { visuallyHidden } from "@mui/utils";
 
 interface Data {
+  consecelemento: string;
+  codespacio: string;
   name: string;
+  marca: string;
   sede: string;
   deporte: string;
 }
 
-function createData(name: string, sede: string, deporte: string): Data {
+function createData(
+  consecelemento: string,
+  codespacio: string,
+  name: string,
+  marca: string,
+  sede: string,
+  deporte: string
+): Data {
   return {
+    consecelemento,
+    codespacio,
     name,
+    marca,
     sede,
     deporte,
   };
 }
 
 const rows = [
-  createData("Colchoneta", "Sede Chapinero", "Fila"),
-  createData("Guantes box", "Sede Macarena", "Under Armour"),
-  createData("Saco boxeo", "Sede Macarena", "Under Armour"),
-  createData("Chaleco boxeo", "Sede Macarena", "Under Armour"),
-  createData("Balón baloncesto", "Sede Porvenir", "Adidas"),
-  createData("Balón fútbol", "Sede Porvenir", "Nike"),
+  createData("6", "a1", "Colchoneta", "Fila", "Sede Chapinero", "Deporte1"),
+  createData(
+    "8",
+    "b7",
+    "Guantes box",
+    "Under Armour",
+    "Sede Macarena",
+    "Deporte1"
+  ),
+  createData(
+    "9",
+    "b7",
+    "Saco boxeo",
+    "Under Armour",
+    "Sede Macarena",
+    "Deporte1"
+  ),
+  createData(
+    "10",
+    "b7",
+    "Chaleco boxeo",
+    "Under Armour",
+    "Sede Macarena",
+    "Deporte1"
+  ),
+  createData(
+    "2",
+    "d4",
+    "Balón baloncesto",
+    "Adidas",
+    "Sede Porvenir",
+    "Deporte1"
+  ),
+  createData("4", "d4", "Balón fútbol", "Nike", "Sede Porvenir", "Deporte1"),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -95,6 +136,18 @@ interface HeadCell {
 }
 
 const headCells: readonly HeadCell[] = [
+  {
+    id: "consecelemento",
+    numeric: false,
+    disablePadding: true,
+    label: "ID",
+  },
+  {
+    id: "codespacio",
+    numeric: false,
+    disablePadding: true,
+    label: "ID Sede",
+  },
   {
     id: "name",
     numeric: false,
@@ -155,10 +208,10 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {headCells.map((headCell, i) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={i === 0 ? "left" : "right"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -183,10 +236,16 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  infoSelected: readonly Data[];
 }
 
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected } = props;
+const EnhancedTableToolbar = ({
+  numSelected,
+  infoSelected,
+}: EnhancedTableToolbarProps) => {
+  const handleClick = () => {
+    console.log(infoSelected);
+  };
 
   return (
     <Toolbar
@@ -223,7 +282,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       )}
       {numSelected > 0 && (
         <Tooltip title="Prestar material(es)">
-          <IconButton>
+          <IconButton onClick={handleClick}>
             <AssignmentRoundedIcon />
           </IconButton>
         </Tooltip>
@@ -236,6 +295,7 @@ const TableMateriales = () => {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
+  const [infoSelected, setInfoSelected] = React.useState<Data[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -257,21 +317,29 @@ const TableMateriales = () => {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (
+    event: React.MouseEvent<unknown>,
+    consecelemento: string,
+    row: Data
+  ) => {
+    const selectedIndex = selected.indexOf(consecelemento);
     let newSelected: readonly string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, consecelemento);
+      infoSelected.push(row);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
+      infoSelected.splice(0, 1);
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
+      infoSelected.splice(-1, 1);
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
         selected.slice(selectedIndex + 1)
       );
+      infoSelected.splice(selectedIndex, 1);
     }
     setSelected(newSelected);
   };
@@ -287,7 +355,8 @@ const TableMateriales = () => {
     setPage(0);
   };
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (consecelemento: string) =>
+    selected.indexOf(consecelemento) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -296,7 +365,10 @@ const TableMateriales = () => {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2, backgroundColor: "#112233" }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          infoSelected={infoSelected}
+        />
         <TableContainer>
           <Table
             sx={{ width: "100%", backgroundColor: "#112233" }}
@@ -317,17 +389,19 @@ const TableMateriales = () => {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.consecelemento);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) =>
+                        handleClick(event, row.consecelemento, row)
+                      }
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.consecelemento}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -345,8 +419,10 @@ const TableMateriales = () => {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.consecelemento}
                       </TableCell>
+                      <TableCell align="right">{row.codespacio}</TableCell>
+                      <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.sede}</TableCell>
                       <TableCell align="right">{row.deporte}</TableCell>
                     </TableRow>
