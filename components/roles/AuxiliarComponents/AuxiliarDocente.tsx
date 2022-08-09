@@ -20,7 +20,7 @@ import { red } from "@mui/material/colors";
 
 // Redux
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { setLogged } from "../../../reducers";
+import { setLoading, newNotification } from "../../../reducers";
 
 // Icons
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
@@ -30,8 +30,25 @@ import { useState } from "react";
 // Components
 import { TableMateriales, AuxiliarFetchingData } from "./";
 
+// uuid
+import { v4 as uuid } from "uuid";
+import { INotification } from "../../../interfaces";
+
+// Date
+import moment from "moment";
+
 interface DocenteProps {
   name: string;
+}
+
+interface DocenteRequest {
+  id: string;
+  name: string;
+  sede: string;
+  idprog?: number;
+  espacio?: string;
+  deporte?: string;
+  num_est?: number;
 }
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -56,7 +73,11 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 const AuxiliarDocente = () => {
+  const dispatch = useAppDispatch();
+
   const { loading } = useAppSelector((state) => state.user);
+
+  const [docente, setDocente] = useState<null | DocenteRequest>(null);
 
   const {
     register,
@@ -70,6 +91,7 @@ const AuxiliarDocente = () => {
   };
 
   const onSubmit = async (data: DocenteProps) => {
+    dispatch(setLoading(true));
     const res = await fetch(`http://127.0.0.1:5000/docente/${data.name}`, {
       method: "GET",
       headers: {
@@ -77,10 +99,22 @@ const AuxiliarDocente = () => {
       },
     });
 
-    const jsonData = (await res.json()) as { logged: boolean; status: string };
+    if (res) dispatch(setLoading(false));
+
+    const jsonData = (await res.json()) as { status: string; message: string };
 
     if (jsonData.status === "success") {
-      console.log(jsonData);
+      console.log(JSON.parse(jsonData.message));
+      setDocente(JSON.parse(jsonData.message));
+    } else {
+      setDocente(null);
+      const payload: INotification = {
+        id: uuid(),
+        title: "Failed:",
+        message: jsonData.message,
+        severity: "error",
+      };
+      dispatch(newNotification(payload));
     }
   };
 
@@ -121,7 +155,7 @@ const AuxiliarDocente = () => {
                 type="text"
                 placeholder="Ej: Pepito Peréz"
                 label="Nombre docente"
-                autoComplete="codigo-de-usuario"
+                autoComplete="nombre-db-modulo"
                 error={!!errors.name}
                 helperText={
                   !!errors.name
@@ -151,7 +185,7 @@ const AuxiliarDocente = () => {
             </Box>
           </form>
         </Box>
-        {true ? (
+        {docente ? (
           <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
             {loading ? (
               <AuxiliarFetchingData />
@@ -164,40 +198,54 @@ const AuxiliarDocente = () => {
                         R
                       </Avatar>
                     }
-                    title="Docente: Pepito Peréz"
-                    subheader="September 14, 2016"
+                    title={`Docente: ${docente.name}`}
+                    subheader={moment(Date.now()).format("DD/MM/YYYY")}
                   />
                   <CardContent
                     sx={{ display: "flex", flexDirection: "column" }}
                   >
-                    <Box display={"flex"} sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Curso:{" "}
-                      </Typography>
-                      <p style={{ color: "white", marginLeft: 10 }}>Curso 1</p>
-                    </Box>
-                    <Box display={"flex"} sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Espacio:{" "}
-                      </Typography>
-                      <p style={{ color: "white", marginLeft: 10 }}>
-                        Espacio 1
-                      </p>
-                    </Box>
-                    <Box display={"flex"} sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Deporte:{" "}
-                      </Typography>
-                      <p style={{ color: "white", marginLeft: 10 }}>
-                        Deporte 1
-                      </p>
-                    </Box>
-                    <Box display={"flex"} sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Número de estudiantes:{" "}
-                      </Typography>
-                      <p style={{ color: "white", marginLeft: 10 }}>25</p>
-                    </Box>
+                    {docente.idprog ? (
+                      <>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Curso:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {docente.idprog}
+                          </p>
+                        </Box>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Espacio:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {docente.espacio}
+                          </p>
+                        </Box>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Deporte:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {docente.deporte}
+                          </p>
+                        </Box>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Número de estudiantes:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {docente.num_est}
+                          </p>
+                        </Box>
+                      </>
+                    ) : (
+                      <>
+                        <Typography variant="h6" color="text.secondary">
+                          No tiene espacios asignados
+                        </Typography>
+                      </>
+                    )}
                   </CardContent>
                   <CardActions disableSpacing>
                     <ExpandMore
@@ -216,7 +264,7 @@ const AuxiliarDocente = () => {
         ) : (
           <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
             <Typography variant="h6" color="#112233">
-              No se encontraron resultados para la búsqueda
+              Digite el nombre del docente para consultar.
             </Typography>
           </Box>
         )}

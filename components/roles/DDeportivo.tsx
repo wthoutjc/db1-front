@@ -55,7 +55,7 @@ const DDeportivo = () => {
       flexDirection={"column"}
       height={"100vh"}
     >
-      {logged ? (
+      {logged && !logged ? (
         <>
           <Box
             sx={{
@@ -67,6 +67,7 @@ const DDeportivo = () => {
               p: 2,
               boxShadow: "0px 0px 1px 0px white",
             }}
+            className={"animate__animated animate__fadeIn"}
           >
             <Typography variant="body2"> Name </Typography>
           </Box>

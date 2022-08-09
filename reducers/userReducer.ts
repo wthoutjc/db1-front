@@ -13,6 +13,10 @@ interface ActionLogged {
   payload: IUser;
 }
 
+interface ActionLoading {
+  payload: boolean;
+}
+
 const userSlice = createSlice({
   name: "[user]",
   initialState,
@@ -20,8 +24,8 @@ const userSlice = createSlice({
     setLogged: (state: IUser, action: ActionLogged) => {
       state.logged = action.payload.logged;
     },
-    setLoading: (state: IUser, action: ActionLogged) => {
-      state.loading = action.payload.loading;
+    setLoading: (state: IUser, action: ActionLoading) => {
+      state.loading = action.payload;
     },
   },
 });

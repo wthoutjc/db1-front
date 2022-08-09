@@ -44,6 +44,7 @@ const Auxiliar = () => {
       flexDirection={"column"}
       height={"100vh"}
     >
+      {loading && !logged && <LinearProgress />}
       {logged ? (
         <Box
           sx={{
@@ -53,6 +54,7 @@ const Auxiliar = () => {
             overflow: "auto",
             width: "100%",
           }}
+          className={"animate__animated animate__fadeIn"}
         >
           <Box
             sx={{

@@ -12,6 +12,8 @@ import { store } from "../store";
 // System Notification
 import { Notifications } from "../components/ui/notification";
 
+import 'animate.css';
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={darkTheme}>

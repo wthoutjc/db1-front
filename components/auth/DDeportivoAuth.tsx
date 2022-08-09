@@ -45,7 +45,7 @@ const DDeportivoAuth = () => {
   };
 
   return (
-    <Box display={"flex"} sx={{ width: "100%" }}>
+    <Box display={"flex"} sx={{ width: "100%" }} className={"animate__animated animate__fadeIn"}>
       <Box
         sx={{
           p: 2,

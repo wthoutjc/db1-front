@@ -5,8 +5,10 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  capitalize,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 // Icons
 import SchoolIcon from "@mui/icons-material/School";
@@ -14,8 +16,14 @@ import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
 
 // Redux
-import { useAppDispatch } from "../../hooks";
-import { setLogged } from "../../reducers";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { setLogged, newNotification, setLoading } from "../../reducers";
+
+// uuid
+import { v4 as uuid } from "uuid";
+
+// Interfaces
+import { INotification } from "../../interfaces";
 
 interface LoginProps {
   cod: string;
@@ -24,6 +32,8 @@ interface LoginProps {
 const AuxiliarAuth = () => {
   const dispatch = useAppDispatch();
 
+  const { loading } = useAppSelector((state) => state.user);
+
   const {
     register,
     handleSubmit,
@@ -31,28 +41,38 @@ const AuxiliarAuth = () => {
   } = useForm<LoginProps>();
 
   const onSubmit = async (data: LoginProps) => {
-    // const res = await fetch(`http://127.0.0.1:5000/login`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(data),
-    // });
+    dispatch(setLoading(true));
+    const res = await fetch(`http://127.0.0.1:5000/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-    // const jsonData = (await res.json()) as { logged: boolean; status: string };
+    const jsonData = (await res.json()) as { status: string; message: string };
 
-    // if (jsonData.status === "success") {
-    // }
+    if (res) dispatch(setLoading(false));
 
-    dispatch(
-      setLogged({
-        logged: true,
-      })
-    );
+    if (jsonData.status === "success") {
+      dispatch(
+        setLogged({
+          logged: true,
+        })
+      );
+    } else {
+      const payload: INotification = {
+        id: uuid(),
+        title: "Failed:",
+        message: jsonData.message,
+        severity: "error",
+      };
+      dispatch(newNotification(payload));
+    }
   };
 
   return (
-    <Box display={"flex"} sx={{ width: "100%" }}>
+    <Box display={"flex"} sx={{ width: "100%" }} className={"animate__animated animate__fadeIn"}>
       <Box
         sx={{
           p: 2,
@@ -107,7 +127,13 @@ const AuxiliarAuth = () => {
               }}
             />
 
-            <Button type="submit" variant="contained" fullWidth>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={loading}
+              sx={{cursor: `${loading ? "wait" : "pointer"}`}}
+            >
               CONECTARSE
             </Button>
           </Box>
