@@ -33,7 +33,7 @@ import { TableMateriales, AuxiliarFetchingData } from "./";
 
 // uuid
 import { v4 as uuid } from "uuid";
-import { INotification } from "../../../interfaces";
+import { IMaterial, INotification } from "../../../interfaces";
 
 // Date
 import moment from "moment";
@@ -79,6 +79,7 @@ const AuxiliarDocente = () => {
   const { loading } = useAppSelector((state) => state.user);
 
   const [docente, setDocente] = useState<null | DocenteRequest>(null);
+  const [materiales, setMateriales] = useState<IMaterial[]>([])
 
   const {
     register,
@@ -94,6 +95,7 @@ const AuxiliarDocente = () => {
   const onSubmit = async (data: DocenteProps) => {
     dispatch(setLoading(true));
     setExpanded(false);
+    setDocente(null);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/docente/${data.name}`,
       {
@@ -106,17 +108,22 @@ const AuxiliarDocente = () => {
 
     if (res) dispatch(setLoading(false));
 
-    const jsonData = (await res.json()) as { status: string; message: string };
+    const jsonData = (await res.json()) as {
+      status: string;
+      message: DocenteRequest | string;
+      materiales: IMaterial[];
+    };
 
     if (jsonData.status === "success") {
-      console.log(JSON.parse(jsonData.message));
-      setDocente(JSON.parse(jsonData.message));
+      console.log(jsonData);
+      setDocente(jsonData.message as DocenteRequest);
+      setMateriales(jsonData.materiales)
     } else {
       setDocente(null);
       const payload: INotification = {
         id: uuid(),
         title: "Failed:",
-        message: jsonData.message,
+        message: jsonData.message as string,
         severity: "error",
       };
       dispatch(newNotification(payload));
@@ -190,12 +197,14 @@ const AuxiliarDocente = () => {
             </Box>
           </form>
         </Box>
-        {docente ? (
+        {loading ? (
           <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
-            {loading ? (
-              <AuxiliarFetchingData />
-            ) : (
-              <>
+            <AuxiliarFetchingData />
+          </Box>
+        ) : (
+          <>
+            {docente ? (
+              <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
                 <Card sx={{ width: "100%" }}>
                   <CardHeader
                     avatar={
@@ -218,7 +227,7 @@ const AuxiliarDocente = () => {
                             Curso:{" "}
                           </Typography>
                           <p style={{ color: "white", marginLeft: 10 }}>
-                            {docente.idprog}
+                            {docente.idprog || "No registra"}
                           </p>
                         </Box>
                         <Box display={"flex"} sx={{ mb: 2 }}>
@@ -226,7 +235,7 @@ const AuxiliarDocente = () => {
                             Espacio:{" "}
                           </Typography>
                           <p style={{ color: "white", marginLeft: 10 }}>
-                            {docente.espacio}
+                            {docente.espacio || "No registra"}
                           </p>
                         </Box>
                         <Box display={"flex"} sx={{ mb: 2 }}>
@@ -234,7 +243,7 @@ const AuxiliarDocente = () => {
                             Deporte:{" "}
                           </Typography>
                           <p style={{ color: "white", marginLeft: 10 }}>
-                            {docente.deporte}
+                            {docente.deporte || "No registra"}
                           </p>
                         </Box>
                         <Box display={"flex"} sx={{ mb: 2 }}>
@@ -242,7 +251,7 @@ const AuxiliarDocente = () => {
                             Número de estudiantes:{" "}
                           </Typography>
                           <p style={{ color: "white", marginLeft: 10 }}>
-                            {docente.num_est}
+                            {docente.num_est || "No registra"}
                           </p>
                         </Box>
                       </>
@@ -255,30 +264,32 @@ const AuxiliarDocente = () => {
                     )}
                   </CardContent>
                   <CardActions disableSpacing>
-                    <ExpandMore
-                      expand={expanded}
-                      onClick={handleExpandClick}
-                      aria-expanded={expanded}
-                      aria-label="show more"
-                    >
-                      <ExpandMoreIcon />
-                    </ExpandMore>
+                    {docente.idprog && materiales && (
+                      <ExpandMore
+                        expand={expanded}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                      >
+                        <ExpandMoreIcon />
+                      </ExpandMore>
+                    )}
                   </CardActions>
                 </Card>
-              </>
+              </Box>
+            ) : (
+              <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
+                <Typography variant="h6" color="#112233">
+                  Digite el nombre del docente para consultar.
+                </Typography>
+              </Box>
             )}
-          </Box>
-        ) : (
-          <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
-            <Typography variant="h6" color="#112233">
-              Digite el nombre del docente para consultar.
-            </Typography>
-          </Box>
+          </>
         )}
       </Box>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ backgroundColor: "#8395a7" }}>
-          <TableMateriales />
+          <TableMateriales rows={materiales} />
         </CardContent>
       </Collapse>
     </>

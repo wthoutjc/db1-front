@@ -2,11 +2,11 @@ import {
   Avatar,
   Box,
   Button,
+  capitalize,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  CircularProgress,
   Collapse,
   IconButton,
   IconButtonProps,
@@ -34,10 +34,7 @@ import { AuxiliarFetchingData } from "./";
 
 // uuid
 import { v4 as uuid } from "uuid";
-import { INotification } from "../../../interfaces";
-
-// Date
-import moment from "moment";
+import { IMaterial, INotification } from "../../../interfaces";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -83,6 +80,7 @@ const AuxiliarPasante = () => {
   const { loading } = useAppSelector((state) => state.user);
 
   const [pasante, setPasante] = useState<null | PasanteRequest>(null);
+  const [materiales, setMateriales] = useState<IMaterial[]>([])
 
   const {
     register,
@@ -98,6 +96,7 @@ const AuxiliarPasante = () => {
   const onSubmit = async (data: PasanteProps) => {
     dispatch(setLoading(true));
     setExpanded(false);
+    setPasante(null);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/pasante/${data.code}`,
       {
@@ -110,17 +109,18 @@ const AuxiliarPasante = () => {
 
     if (res) dispatch(setLoading(false));
 
-    const jsonData = (await res.json()) as { status: string; message: string };
+    const jsonData = (await res.json()) as { status: string; message: PasanteRequest | string, materiales: IMaterial[] };
 
     if (jsonData.status === "success") {
-      console.log(JSON.parse(jsonData.message));
-      setPasante(JSON.parse(jsonData.message));
+      console.log(jsonData);
+      setPasante(jsonData.message as PasanteRequest);
+      setMateriales(jsonData.materiales)
     } else {
       setPasante(null);
       const payload: INotification = {
         id: uuid(),
         title: "Failed:",
-        message: jsonData.message,
+        message: jsonData.message as string,
         severity: "error",
       };
       dispatch(newNotification(payload));
@@ -192,87 +192,105 @@ const AuxiliarPasante = () => {
             </Box>
           </form>
         </Box>
-        {pasante ? (
+        {loading ? (
           <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
-            {loading ? (
-              <AuxiliarFetchingData />
-            ) : (
-              <Card sx={{ width: "100%" }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      R
-                    </Avatar>
-                  }
-                  title={`Estudiante: ${pasante.name}`}
-                  subheader={`Hora inicio: ${pasante.horai} - Hora fin: ${pasante.horaf}`}
-                />
-                <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-                  {pasante.idprog ? (
-                    <>
-                      <Box display={"flex"} sx={{ mb: 2 }}>
-                        <Typography variant="body2" color="text.secondary">
-                          Práctica libre:{" "}
-                        </Typography>
-                        <p style={{ color: "white", marginLeft: 10 }}>
-                          Práctica 1
-                        </p>
-                      </Box>
-                      <Box display={"flex"} sx={{ mb: 2 }}>
-                        <Typography variant="body2" color="text.secondary">
-                          Espacio:{" "}
-                        </Typography>
-                        <p style={{ color: "white", marginLeft: 10 }}>
-                          Espacio 1
-                        </p>
-                      </Box>
-                      <Box display={"flex"} sx={{ mb: 2 }}>
-                        <Typography variant="body2" color="text.secondary">
-                          Deporte:{" "}
-                        </Typography>
-                        <p style={{ color: "white", marginLeft: 10 }}>
-                          Deporte 1
-                        </p>
-                      </Box>
-                      <Box display={"flex"} sx={{ mb: 2 }}>
-                        <Typography variant="body2" color="text.secondary">
-                          Número de inscritos:{" "}
-                        </Typography>
-                        <p style={{ color: "white", marginLeft: 10 }}>25</p>
-                      </Box>
-                    </>
-                  ) : (
-                    <>
-                      <Typography variant="h6" color="text.secondary">
-                        No tiene práctica libre
-                      </Typography>
-                    </>
-                  )}
-                </CardContent>
-                <CardActions disableSpacing>
-                  <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                  >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
-                </CardActions>
-              </Card>
-            )}
+            <AuxiliarFetchingData />
           </Box>
         ) : (
-          <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
-            <Typography variant="h6" color="#112233">
-              No se encontraron resultados para la búsqueda
-            </Typography>
-          </Box>
+          <>
+            {pasante ? (
+              <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
+                <Card sx={{ width: "100%" }}>
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        {capitalize(pasante.name[0])}
+                      </Avatar>
+                    }
+                    title={`Estudiante: ${pasante.name}`}
+                    subheader={`Hora inicio: ${pasante.horai} - Hora fin: ${pasante.horaf}`}
+                  />
+                  <CardContent
+                    sx={{ display: "flex", flexDirection: "column" }}
+                  >
+                    {pasante.idprog ? (
+                      <>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Sede:
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {pasante.sede}
+                          </p>
+                        </Box>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Práctica libre:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {pasante.idprog}
+                          </p>
+                        </Box>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Espacio:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {pasante.espacio}
+                          </p>
+                        </Box>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Deporte:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {pasante.deporte}
+                          </p>
+                        </Box>
+                        <Box display={"flex"} sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            Número de inscritos:{" "}
+                          </Typography>
+                          <p style={{ color: "white", marginLeft: 10 }}>
+                            {pasante.num_est}
+                          </p>
+                        </Box>
+                      </>
+                    ) : (
+                      <>
+                        <Typography variant="h6" color="text.secondary">
+                          No tiene práctica libre
+                        </Typography>
+                      </>
+                    )}
+                  </CardContent>
+                  <CardActions disableSpacing>
+                    {pasante.idprog && materiales && (
+                      <ExpandMore
+                        expand={expanded}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                      >
+                        <ExpandMoreIcon />
+                      </ExpandMore>
+                    )}
+                  </CardActions>
+                </Card>
+              </Box>
+            ) : (
+              <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
+                <Typography variant="h6" color="#112233">
+                  No se encontraron resultados para la búsqueda
+                </Typography>
+              </Box>
+            )}
+          </>
         )}
       </Box>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ backgroundColor: "#8395a7" }}>
-          <TableMateriales />
+          <TableMateriales rows={materiales} />
         </CardContent>
       </Collapse>
     </>

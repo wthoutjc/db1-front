@@ -25,69 +25,14 @@ import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 // Utils
 import { visuallyHidden } from "@mui/utils";
 
-interface Data {
-  consecelemento: string;
-  codespacio: string;
-  name: string;
-  marca: string;
-  sede: string;
-  deporte: string;
-}
+// Interfaces
+import { IMaterial } from "../../../interfaces";
+import { useAppDispatch } from "../../../hooks";
+import { setLoading, newNotification } from "../../../reducers";
 
-function createData(
-  consecelemento: string,
-  codespacio: string,
-  name: string,
-  marca: string,
-  sede: string,
-  deporte: string
-): Data {
-  return {
-    consecelemento,
-    codespacio,
-    name,
-    marca,
-    sede,
-    deporte,
-  };
-}
-
-const rows = [
-  createData("6", "a1", "Colchoneta", "Fila", "Sede Chapinero", "Deporte1"),
-  createData(
-    "8",
-    "b7",
-    "Guantes box",
-    "Under Armour",
-    "Sede Macarena",
-    "Deporte1"
-  ),
-  createData(
-    "9",
-    "b7",
-    "Saco boxeo",
-    "Under Armour",
-    "Sede Macarena",
-    "Deporte1"
-  ),
-  createData(
-    "10",
-    "b7",
-    "Chaleco boxeo",
-    "Under Armour",
-    "Sede Macarena",
-    "Deporte1"
-  ),
-  createData(
-    "2",
-    "d4",
-    "Balón baloncesto",
-    "Adidas",
-    "Sede Porvenir",
-    "Deporte1"
-  ),
-  createData("4", "d4", "Balón fútbol", "Nike", "Sede Porvenir", "Deporte1"),
-];
+// uuid
+import { v4 as uuid } from "uuid";
+import { INotification } from "../../../interfaces";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -130,26 +75,26 @@ function stableSort<T>(
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Data;
+  id: keyof IMaterial;
   label: string;
   numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "consecelemento",
+    id: "idElemento",
     numeric: false,
     disablePadding: true,
     label: "ID",
   },
   {
-    id: "codespacio",
+    id: "idEspacio",
     numeric: false,
     disablePadding: true,
     label: "ID Sede",
   },
   {
-    id: "name",
+    id: "material",
     numeric: false,
     disablePadding: true,
     label: "Material",
@@ -172,7 +117,7 @@ interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: keyof IMaterial
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -190,7 +135,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     onRequestSort,
   } = props;
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof IMaterial) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -236,16 +181,17 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
-  infoSelected: readonly Data[];
+  infoSelected: readonly IMaterial[];
 }
 
 const EnhancedTableToolbar = ({
   numSelected,
   infoSelected,
 }: EnhancedTableToolbarProps) => {
+  const dispatch = useAppDispatch()
+
   const handleClick = async () => {
-    console.log(infoSelected);
-    // dispatch(setLoading(true));
+    dispatch(setLoading(true));
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prestar`, {
       method: "POST",
       headers: {
@@ -253,6 +199,19 @@ const EnhancedTableToolbar = ({
       },
       body: JSON.stringify(infoSelected),
     });
+
+    if (res) dispatch(setLoading(false));
+
+    const data = await res.json();
+    
+    const payload: INotification = {
+      id: uuid(),
+      title: "Registro exitoso:",
+      message: data.message,
+      severity: "success",
+    };
+    dispatch(newNotification(payload));
+
   };
 
   return (
@@ -299,17 +258,17 @@ const EnhancedTableToolbar = ({
   );
 };
 
-const TableMateriales = () => {
+const TableMateriales = ({ rows }: { rows: IMaterial[] }) => {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
+  const [orderBy, setOrderBy] = React.useState<keyof IMaterial>("material");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
-  const [infoSelected, setInfoSelected] = React.useState<Data[]>([]);
+  const [infoSelected, setInfoSelected] = React.useState<IMaterial[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: keyof IMaterial
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -318,7 +277,7 @@ const TableMateriales = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = rows.map((n) => n.material);
       setSelected(newSelected);
       return;
     }
@@ -327,14 +286,14 @@ const TableMateriales = () => {
 
   const handleClick = (
     event: React.MouseEvent<unknown>,
-    consecelemento: string,
-    row: Data
+    idElemento: string,
+    row: IMaterial
   ) => {
-    const selectedIndex = selected.indexOf(consecelemento);
+    const selectedIndex = selected.indexOf(idElemento);
     let newSelected: readonly string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, consecelemento);
+      newSelected = newSelected.concat(selected, idElemento);
       infoSelected.push(row);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
@@ -363,8 +322,8 @@ const TableMateriales = () => {
     setPage(0);
   };
 
-  const isSelected = (consecelemento: string) =>
-    selected.indexOf(consecelemento) !== -1;
+  const isSelected = (idElemento: string) =>
+    selected.indexOf(idElemento) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -397,19 +356,19 @@ const TableMateriales = () => {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.consecelemento);
+                  const isItemSelected = isSelected(String(row.idElemento));
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
                       onClick={(event) =>
-                        handleClick(event, row.consecelemento, row)
+                        handleClick(event, String(row.idElemento), row)
                       }
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.consecelemento}
+                      key={String(row.idElemento)}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -427,10 +386,10 @@ const TableMateriales = () => {
                         scope="row"
                         padding="none"
                       >
-                        {row.consecelemento}
+                        {row.idElemento}
                       </TableCell>
-                      <TableCell align="right">{row.codespacio}</TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
+                      <TableCell align="right">{row.idEspacio}</TableCell>
+                      <TableCell align="right">{row.material}</TableCell>
                       <TableCell align="right">{row.sede}</TableCell>
                       <TableCell align="right">{row.deporte}</TableCell>
                     </TableRow>
