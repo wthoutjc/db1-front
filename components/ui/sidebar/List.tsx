@@ -19,9 +19,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { toggleSidebar, setRole, setLogged } from "../../../reducers";
 import { useState } from "react";
 
-// Components
-import { DateForm } from "./";
-
 const List = () => {
   const dispatch = useAppDispatch();
   const { role } = useAppSelector((state) => state.info);
@@ -77,29 +74,6 @@ const List = () => {
         </FormControl>
       </Box>
       <Divider />
-      <Box sx={{ p: 2 }}>
-        <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">Fecha</FormLabel>
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            name="radio-buttons-group"
-            value={dateType}
-            onChange={handleDateTypeChange}
-          >
-            <FormControlLabel
-              value="auto"
-              control={<Radio />}
-              label="Fecha automática"
-            />
-            <FormControlLabel
-              value="manual"
-              control={<Radio />}
-              label="Fecha manual"
-            />
-          </RadioGroup>
-        </FormControl>
-      </Box>
-      {dateType === "manual" && <DateForm />}
     </Box>
   );
 };

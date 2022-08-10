@@ -26,10 +26,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { red } from "@mui/material/colors";
 
 // Redux
-import { useAppSelector } from "../../../hooks";
+import { useAppSelector, useAppDispatch } from "../../../hooks";
+import { setLoading, newNotification } from "../../../reducers";
 
 // Components
 import { AuxiliarFetchingData } from "./";
+
+// uuid
+import { v4 as uuid } from "uuid";
+import { INotification } from "../../../interfaces";
+
+// Date
+import moment from "moment";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -57,8 +65,17 @@ interface PasanteProps {
   codeTeam: string;
 }
 
+interface MiembroRequest {
+  codeStudent: string;
+  codeTeam: string;
+}
+
 const AuxiliarMiembro = () => {
+  const dispatch = useAppDispatch();
+
   const { loading } = useAppSelector((state) => state.user);
+
+  const [miembro, setMiembro] = useState<null | MiembroRequest>(null);
 
   const {
     register,
@@ -72,7 +89,7 @@ const AuxiliarMiembro = () => {
   };
 
   const onSubmit = async (data: PasanteProps) => {
-    const res = await fetch(`http://127.0.0.1:5000/miembro`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/miembro`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,10 +97,20 @@ const AuxiliarMiembro = () => {
       body: JSON.stringify(data),
     });
 
-    const jsonData = (await res.json()) as { logged: boolean; status: string };
+    const jsonData = (await res.json()) as { status: string; message: string };
 
     if (jsonData.status === "success") {
-      console.log(jsonData);
+      console.log(JSON.parse(jsonData.message));
+      setMiembro(JSON.parse(jsonData.message));
+    } else {
+      setMiembro(null);
+      const payload: INotification = {
+        id: uuid(),
+        title: "Failed:",
+        message: jsonData.message,
+        severity: "error",
+      };
+      dispatch(newNotification(payload));
     }
   };
 

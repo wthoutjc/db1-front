@@ -1,4 +1,7 @@
 export interface IInfo {
   role: string;
-  date?: string;
+  data: {
+    name: string;
+    sede: string;
+  } | null;
 }

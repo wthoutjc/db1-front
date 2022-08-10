@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  capitalize,
   Card,
   CardActions,
   CardContent,
@@ -92,12 +93,16 @@ const AuxiliarDocente = () => {
 
   const onSubmit = async (data: DocenteProps) => {
     dispatch(setLoading(true));
-    const res = await fetch(`http://127.0.0.1:5000/docente/${data.name}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    setExpanded(false);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/docente/${data.name}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (res) dispatch(setLoading(false));
 
@@ -195,11 +200,13 @@ const AuxiliarDocente = () => {
                   <CardHeader
                     avatar={
                       <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
+                        {capitalize(docente.name[0])}
                       </Avatar>
                     }
                     title={`Docente: ${docente.name}`}
-                    subheader={`${moment(Date.now()).format("DD/MM/YYYY")} • ${docente.sede} • ${docente.id}`}
+                    subheader={`${moment(Date.now()).format("DD/MM/YYYY")} • ${
+                      docente.sede
+                    } • ${docente.id}`}
                   />
                   <CardContent
                     sx={{ display: "flex", flexDirection: "column" }}

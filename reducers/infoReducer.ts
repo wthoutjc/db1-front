@@ -6,11 +6,18 @@ import { AppState } from "../store";
 
 const initialState: IInfo = {
   role: "auxiliar",
-  date: "",
+  data: null,
 };
 
 interface ActionRole {
   payload: IInfo;
+}
+
+interface ActionData {
+  payload: {
+    name: string;
+    sede: string;
+  };
 }
 
 const infoSlice = createSlice({
@@ -20,16 +27,19 @@ const infoSlice = createSlice({
     setRole: (state: IInfo, action: ActionRole) => {
       state.role = action.payload.role;
     },
-    setDate: (state: IInfo, action: ActionRole) => {
-      state.date = action.payload.date;
+    setData: (state: IInfo, action: ActionData) => {
+      state.data = action.payload;
     },
+    resetData: (state: IInfo) => {
+      state.data = null;
+    }
   },
 });
 
 export { infoSlice };
 
 // Actions
-export const { setRole, setDate } = infoSlice.actions;
+export const { setRole, setData, resetData} = infoSlice.actions;
 
 // Select to access to the store
 export const selectInfo = (state: AppState) => state.info;

@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 // Redux
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { toggleSidebar, setLogged } from "../../reducers";
+import { toggleSidebar, setLogged, resetData } from "../../reducers";
 
 // Components
 import { Sidebar } from "./sidebar";
@@ -30,7 +30,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const { sidebar } = useAppSelector((state) => state.ui);
-  const { role } = useAppSelector((state) => state.info);
+  const { role, data } = useAppSelector((state) => state.info);
   const { logged } = useAppSelector((state) => state.user);
   const { open } = sidebar;
 
@@ -39,6 +39,7 @@ const Navbar = () => {
   };
 
   const handleLogOut = () => {
+    dispatch(resetData());
     dispatch(
       setLogged({
         logged: false,
@@ -102,6 +103,11 @@ const Navbar = () => {
             <Typography variant="h6" sx={{ userSelect: "none" }}>
               {role === "ddeportivo" ? "Director Deportivo" : capitalize(role)}
             </Typography>
+            {data && (
+              <Typography variant="h6">
+                {data.name} - {data.sede}
+              </Typography>
+            )}
             <Typography
               variant="body1"
               color="text.secondary"

@@ -22,19 +22,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// uuid
-// import { v4 as uuid } from "uuid";
-
-// const dispatch = useAppDispatch();
-
-// const handleNotification = () => {
-//   const payload: INotification = {
-//     id: uuid(),
-//     title: "Success:",
-//     message:
-//       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa, iusto quibusdam laboriosam magni at nesciunt quam. Architecto dignissimos numquam, fugiat rem commodi neque enim optio. Ut odit deserunt explicabo tenetur? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa, iusto quibusdam laboriosam magni at nesciunt quam. Architecto dignissimos numquam, fugiat rem commodi neque enim optio. Ut odit deserunt explicabo tenetur?",
-//     severity: "error",
-//   };
-//   dispatch(newNotification(payload));
-// };

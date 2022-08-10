@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, LinearProgress, Typography } from "@mui/material";
 
 // Redux
 import { useAppSelector } from "../../hooks";
@@ -11,15 +11,10 @@ import { useState } from "react";
 type Render = 0 | 1 | 2;
 
 const DDeportivo = () => {
-  const { logged } = useAppSelector((state) => state.user);
-  const [render, setRender] = useState<Render>(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: Render) => {
-    setRender(newValue);
-  };
+  const { logged, loading } = useAppSelector((state) => state.user);
 
   const handlePDFPasante = async () => {
-    const res = await fetch(`http://127.0.0.1:5000/pdf-pasante`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pdf-pasante`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +29,7 @@ const DDeportivo = () => {
   };
 
   const handlePDFMiembros = async () => {
-    const res = await fetch(`http://127.0.0.1:5000/pdf-miembro`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pdf-miembro`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +50,8 @@ const DDeportivo = () => {
       flexDirection={"column"}
       height={"100vh"}
     >
-      {logged && !logged ? (
+      {loading && !logged && <LinearProgress />}
+      {logged ? (
         <>
           <Box
             sx={{

@@ -9,23 +9,38 @@ import {
 import { useForm } from "react-hook-form";
 
 // Icons
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PictureAsPdfRoundedIcon from "@mui/icons-material/PictureAsPdfRounded";
 
-// SWR
-import useSWR from "swr";
-
 // Redux
-import { useAppDispatch } from "../../hooks";
-import { setLogged } from "../../reducers";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import {
+  setLogged,
+  newNotification,
+  setLoading,
+  setData,
+} from "../../reducers";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+// uuid
+import { v4 as uuid } from "uuid";
+
+// Interfaces
+import { INotification } from "../../interfaces";
 
 interface LoginProps {
   cod: string;
 }
 
+interface DirectorDeportivo {
+  name: string;
+  sede: string;
+}
+
 const DDeportivoAuth = () => {
   const dispatch = useAppDispatch();
+
+  const { loading } = useAppSelector((state) => state.user);
+  const { role } = useAppSelector((state) => state.info);
 
   const {
     register,
@@ -33,19 +48,48 @@ const DDeportivoAuth = () => {
     formState: { errors },
   } = useForm<LoginProps>();
 
-  // SWR - Client side
-  // const { data, error } = useSWR("/api/users", fetcher);
+  const onSubmit = async (data: LoginProps) => {
+    dispatch(setLoading(true));
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data, role }),
+    });
 
-  const onSubmit = (data: LoginProps) => {
-    dispatch(
-      setLogged({
-        logged: true,
-      })
-    );
+    const jsonData = (await res.json()) as {
+      status: string;
+      ddeportivo: string;
+      message: string;
+    };
+
+    if (res) dispatch(setLoading(false));
+
+    if (jsonData.status === "success") {
+      dispatch(setData(JSON.parse(jsonData.ddeportivo)));
+      dispatch(
+        setLogged({
+          logged: true,
+        })
+      );
+    } else {
+      const payload: INotification = {
+        id: uuid(),
+        title: "Failed:",
+        message: jsonData.message,
+        severity: "error",
+      };
+      dispatch(newNotification(payload));
+    }
   };
 
   return (
-    <Box display={"flex"} sx={{ width: "100%" }} className={"animate__animated animate__fadeIn"}>
+    <Box
+      display={"flex"}
+      sx={{ width: "100%" }}
+      className={"animate__animated animate__fadeIn"}
+    >
       <Box
         sx={{
           p: 2,
@@ -96,13 +140,19 @@ const DDeportivoAuth = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    {/* <EmailIcon /> */}
+                    <PeopleAltIcon />
                   </InputAdornment>
                 ),
               }}
             />
 
-            <Button type="submit" variant="contained" fullWidth>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={loading}
+              sx={{ cursor: `${loading ? "wait" : "pointer"}` }}
+            >
               CONECTARSE
             </Button>
           </Box>
@@ -141,10 +191,3 @@ const DDeportivoAuth = () => {
 };
 
 export { DDeportivoAuth };
-
-// {showError && (
-//     <Alert severity="error" sx={{ mt: 1, mb: 1 }}>
-//       <AlertTitle>Error</AlertTitle>
-//       E-mail or password is not valid
-//     </Alert>
-//   )}

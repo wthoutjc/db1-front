@@ -5,19 +5,23 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  capitalize,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 
 // Icons
 import SchoolIcon from "@mui/icons-material/School";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 // Redux
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { setLogged, newNotification, setLoading } from "../../reducers";
+import {
+  setLogged,
+  newNotification,
+  setLoading,
+  setData,
+} from "../../reducers";
 
 // uuid
 import { v4 as uuid } from "uuid";
@@ -33,6 +37,7 @@ const AuxiliarAuth = () => {
   const dispatch = useAppDispatch();
 
   const { loading } = useAppSelector((state) => state.user);
+  const { role } = useAppSelector((state) => state.info);
 
   const {
     register,
@@ -42,19 +47,24 @@ const AuxiliarAuth = () => {
 
   const onSubmit = async (data: LoginProps) => {
     dispatch(setLoading(true));
-    const res = await fetch(`http://127.0.0.1:5000/login`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ data, role }),
     });
 
-    const jsonData = (await res.json()) as { status: string; message: string };
+    const jsonData = (await res.json()) as {
+      status: string;
+      auxiliar: string;
+      message: string;
+    };
 
     if (res) dispatch(setLoading(false));
 
     if (jsonData.status === "success") {
+      dispatch(setData(JSON.parse(jsonData.auxiliar)));
       dispatch(
         setLogged({
           logged: true,
@@ -72,7 +82,11 @@ const AuxiliarAuth = () => {
   };
 
   return (
-    <Box display={"flex"} sx={{ width: "100%" }} className={"animate__animated animate__fadeIn"}>
+    <Box
+      display={"flex"}
+      sx={{ width: "100%" }}
+      className={"animate__animated animate__fadeIn"}
+    >
       <Box
         sx={{
           p: 2,
@@ -121,7 +135,7 @@ const AuxiliarAuth = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    {/* <EmailIcon /> */}
+                    <PeopleAltIcon />
                   </InputAdornment>
                 ),
               }}
@@ -132,7 +146,7 @@ const AuxiliarAuth = () => {
               variant="contained"
               fullWidth
               disabled={loading}
-              sx={{cursor: `${loading ? "wait" : "pointer"}`}}
+              sx={{ cursor: `${loading ? "wait" : "pointer"}` }}
             >
               CONECTARSE
             </Button>
@@ -182,10 +196,3 @@ const AuxiliarAuth = () => {
 };
 
 export { AuxiliarAuth };
-
-// {showError && (
-//     <Alert severity="error" sx={{ mt: 1, mb: 1 }}>
-//       <AlertTitle>Error</AlertTitle>
-//       E-mail or password is not valid
-//     </Alert>
-//   )}
