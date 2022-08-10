@@ -243,8 +243,16 @@ const EnhancedTableToolbar = ({
   numSelected,
   infoSelected,
 }: EnhancedTableToolbarProps) => {
-  const handleClick = () => {
+  const handleClick = async () => {
     console.log(infoSelected);
+    // dispatch(setLoading(true));
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prestar`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(infoSelected),
+    });
   };
 
   return (

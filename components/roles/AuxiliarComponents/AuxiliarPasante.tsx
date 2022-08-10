@@ -67,11 +67,14 @@ interface PasanteProps {
 interface PasanteRequest {
   id_est: string;
   name: string;
-  dia: string;
   horai: string;
   horaf: string;
-  periodo: string;
-  
+  idprog?: string;
+  sede?: string;
+  espacio?: string;
+  id_deporte?: string;
+  deporte?: string;
+  num_est?: number;
 }
 
 const AuxiliarPasante = () => {
@@ -189,7 +192,7 @@ const AuxiliarPasante = () => {
             </Box>
           </form>
         </Box>
-        {true ? (
+        {pasante ? (
           <Box sx={{ width: "60%", p: 2, backgroundColor: "#8395a7" }}>
             {loading ? (
               <AuxiliarFetchingData />
@@ -201,34 +204,50 @@ const AuxiliarPasante = () => {
                       R
                     </Avatar>
                   }
-                  title="Estudiante: Pepito Peréz"
-                  subheader="September 14, 2016"
+                  title={`Estudiante: ${pasante.name}`}
+                  subheader={`Hora inicio: ${pasante.horai} - Hora fin: ${pasante.horaf}`}
                 />
                 <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-                  <Box display={"flex"} sx={{ mb: 2 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      Práctica libre:{" "}
-                    </Typography>
-                    <p style={{ color: "white", marginLeft: 10 }}>Práctica 1</p>
-                  </Box>
-                  <Box display={"flex"} sx={{ mb: 2 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      Espacio:{" "}
-                    </Typography>
-                    <p style={{ color: "white", marginLeft: 10 }}>Espacio 1</p>
-                  </Box>
-                  <Box display={"flex"} sx={{ mb: 2 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      Deporte:{" "}
-                    </Typography>
-                    <p style={{ color: "white", marginLeft: 10 }}>Deporte 1</p>
-                  </Box>
-                  <Box display={"flex"} sx={{ mb: 2 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      Número de inscritos:{" "}
-                    </Typography>
-                    <p style={{ color: "white", marginLeft: 10 }}>25</p>
-                  </Box>
+                  {pasante.idprog ? (
+                    <>
+                      <Box display={"flex"} sx={{ mb: 2 }}>
+                        <Typography variant="body2" color="text.secondary">
+                          Práctica libre:{" "}
+                        </Typography>
+                        <p style={{ color: "white", marginLeft: 10 }}>
+                          Práctica 1
+                        </p>
+                      </Box>
+                      <Box display={"flex"} sx={{ mb: 2 }}>
+                        <Typography variant="body2" color="text.secondary">
+                          Espacio:{" "}
+                        </Typography>
+                        <p style={{ color: "white", marginLeft: 10 }}>
+                          Espacio 1
+                        </p>
+                      </Box>
+                      <Box display={"flex"} sx={{ mb: 2 }}>
+                        <Typography variant="body2" color="text.secondary">
+                          Deporte:{" "}
+                        </Typography>
+                        <p style={{ color: "white", marginLeft: 10 }}>
+                          Deporte 1
+                        </p>
+                      </Box>
+                      <Box display={"flex"} sx={{ mb: 2 }}>
+                        <Typography variant="body2" color="text.secondary">
+                          Número de inscritos:{" "}
+                        </Typography>
+                        <p style={{ color: "white", marginLeft: 10 }}>25</p>
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Typography variant="h6" color="text.secondary">
+                        No tiene práctica libre
+                      </Typography>
+                    </>
+                  )}
                 </CardContent>
                 <CardActions disableSpacing>
                   <ExpandMore
