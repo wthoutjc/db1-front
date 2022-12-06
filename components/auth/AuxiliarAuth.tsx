@@ -13,6 +13,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PasswordIcon from '@mui/icons-material/Password';
 
 // Redux
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -31,6 +32,7 @@ import { INotification } from "../../interfaces";
 
 interface LoginProps {
   cod: string;
+  psswd: string;
 }
 
 const AuxiliarAuth = () => {
@@ -140,7 +142,30 @@ const AuxiliarAuth = () => {
                 ),
               }}
             />
-
+            <TextField
+              fullWidth
+              sx={{ marginBottom: "1em" }}
+              type="password"
+              placeholder="Ej: ******"
+              label="Contraseña"
+              autoComplete="contraseña-de-usuario"
+              error={!!errors.psswd}
+              helperText={
+                !!errors.psswd
+                  ? errors.psswd.message
+                  : "Escribe tu contraseña de usuario"
+              }
+              {...register("psswd", {
+                required: "Contraseña es un campo requerido",
+              })}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PasswordIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
             <Button
               type="submit"
               variant="contained"

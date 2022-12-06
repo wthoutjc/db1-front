@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 // Icons
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PictureAsPdfRoundedIcon from "@mui/icons-material/PictureAsPdfRounded";
+import PasswordIcon from "@mui/icons-material/Password";
 
 // Redux
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -29,11 +30,7 @@ import { INotification } from "../../interfaces";
 
 interface LoginProps {
   cod: string;
-}
-
-interface DirectorDeportivo {
-  name: string;
-  sede: string;
+  psswd: string;
 }
 
 const DDeportivoAuth = () => {
@@ -145,7 +142,30 @@ const DDeportivoAuth = () => {
                 ),
               }}
             />
-
+            <TextField
+              fullWidth
+              sx={{ marginBottom: "1em" }}
+              type="password"
+              placeholder="Ej: *****"
+              label="Contraseña"
+              autoComplete="contraseña-de-usuario"
+              error={!!errors.psswd}
+              helperText={
+                !!errors.psswd
+                  ? errors.psswd.message
+                  : "Escribe tu contraseña de usuario"
+              }
+              {...register("psswd", {
+                required: "Contraseña es un campo requerido",
+              })}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PasswordIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
             <Button
               type="submit"
               variant="contained"

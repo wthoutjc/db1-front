@@ -13,6 +13,7 @@ import NextLink from "next/link";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import BookIcon from "@mui/icons-material/Book";
 
 // Redux
 import { useAppSelector, useAppDispatch } from "../../hooks";
@@ -77,14 +78,37 @@ const Navbar = () => {
               </Link>
             </NextLink>
           </Box>
-          <Box>
-            {logged && (
-              <Tooltip title="Cerrar sesión">
-                <IconButton onClick={handleLogOut} size="small">
-                  <LogoutIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            )}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Tooltip title="Manual de usuario">
+              <IconButton
+                onClick={() =>
+                  window.open(
+                    "https://drive.google.com/file/d/1Ol4vxDy4O1ymXkzWNz2l_9fQCPXwNlnj/view",
+                    "_blank"
+                  )
+                }
+              >
+                <BookIcon />
+              </IconButton>
+            </Tooltip>
+            <Box
+              sx={{
+                ml: 4,
+              }}
+            >
+              {logged && (
+                <Tooltip title="Cerrar sesión">
+                  <IconButton onClick={handleLogOut} size="small">
+                    <LogoutIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
