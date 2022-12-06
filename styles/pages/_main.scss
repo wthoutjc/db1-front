@@ -1,0 +1,25 @@
+.main__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: $whitePrimary;
+    color: $blackPrimary;
+    overflow: auto;
+}
+.main__application {
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    padding: 1em;
+    overflow: auto;
+}
+.main__application > div:first-child {
+    margin-bottom: 0 !important;
+}
+.main__application > div:not(:first-child) {
+    background-color: $whiteSecondary;
+    border-radius: 0.4em;
+}
+.main__application > div:not(:last-child) {
+    margin-bottom: 1em;
+}
