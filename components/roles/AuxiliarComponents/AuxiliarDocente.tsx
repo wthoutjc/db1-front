@@ -114,9 +114,16 @@ const AuxiliarDocente = () => {
       materiales: IMaterial[];
     };
 
+<<<<<<< HEAD
     if (jsonData.status === "success") {
       console.log(jsonData);
       setDocente(jsonData.message as DocenteRequest);
+=======
+    console.log(jsonData);
+
+    if (jsonData.status === "success") {
+      setDocente(JSON.parse(jsonData.message as string) as DocenteRequest);
+>>>>>>> 2459f067e3603f2cd564b114f5bc4c76a5621600
       setMateriales(jsonData.materiales)
     } else {
       setDocente(null);
