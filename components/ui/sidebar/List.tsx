@@ -39,6 +39,7 @@ const List = () => {
     dispatch(
       setRole({
         role: e.target.value as string,
+        data: null,
       })
     );
   };
