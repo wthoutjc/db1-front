@@ -6,10 +6,6 @@ import { useAppSelector } from "../../hooks";
 // Components
 import { DDeportivoAuth } from "../auth";
 
-import { useState } from "react";
-
-type Render = 0 | 1 | 2;
-
 const DDeportivo = () => {
   const { logged, loading } = useAppSelector((state) => state.user);
 

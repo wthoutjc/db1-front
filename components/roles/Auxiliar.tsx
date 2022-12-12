@@ -3,8 +3,6 @@ import {
   BottomNavigationAction,
   Box,
   LinearProgress,
-  Tab,
-  Tabs,
 } from "@mui/material";
 
 // Redux

@@ -2,13 +2,9 @@ import {
   Box,
   Divider,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  FormLabel,
   InputLabel,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
   SelectChangeEvent,
   Typography,
@@ -17,17 +13,10 @@ import {
 // Redux
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { toggleSidebar, setRole, setLogged } from "../../../reducers";
-import { useState } from "react";
 
 const List = () => {
   const dispatch = useAppDispatch();
   const { role } = useAppSelector((state) => state.info);
-
-  const [dateType, setDateType] = useState<string>("auto");
-
-  const handleDateTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDateType((event.target as HTMLInputElement).value);
-  };
 
   const handleRoleChange = (e: SelectChangeEvent<string>) => {
     dispatch(
@@ -44,16 +33,10 @@ const List = () => {
     );
   };
 
-  const handleClick = () => {
-    // dispatch(toggleSidebar());
-    console.log("handleClick");
-  };
-
   return (
     <Box
       sx={{ width: 300 }}
       role="presentation"
-      onClick={handleClick}
       onKeyDown={() => dispatch(toggleSidebar())}
     >
       <Box sx={{ p: 2 }}>

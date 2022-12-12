@@ -1,5 +1,4 @@
 import { createTheme } from "@mui/material";
-import {} from "@mui/material/colors";
 
 // Colors
 
