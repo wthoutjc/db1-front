@@ -209,7 +209,7 @@ const AuxiliarDocente = () => {
                   <CardHeader
                     avatar={
                       <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {capitalize(docente.name[0])}
+                        {Array.isArray(docente.name) ? capitalize(docente.name[0]) : "D"}
                       </Avatar>
                     }
                     title={`Docente: ${docente.name}`}

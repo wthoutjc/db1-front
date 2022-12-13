@@ -49,6 +49,11 @@ const AuxiliarAuth = () => {
 
   const onSubmit = async (data: LoginProps) => {
     dispatch(setLoading(true));
+    console.log({
+      data,
+      role,
+    });
+    
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       headers: {
